@@ -32,15 +32,30 @@
                 </li>
                 <li class="nav-item">
                     <router-link tag="a" to="/users" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>Users</p>
                     </router-link>
                 </li>
                 <!-- New Sidebar Item -->
                 <li class="nav-item">
-                    <router-link tag="a" to="/something-new" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>Something new</p>
+                    <router-link tag="a" to="/countries" class="nav-link">
+                        <i class="nav-icon fas fa-globe"></i>
+                        <p>Countries</p>
+                    </router-link>
+                </li>
+                <!-- New Sidebar Item -->
+                <li class="nav-item">
+                    <router-link tag="a" to="/leagues" class="nav-link">
+                        <i class="nav-icon fas fa-atlas"></i>
+                        <p>Leagues</p>
+                    </router-link>
+                </li>
+
+                <!-- New Sidebar Item -->
+                <li class="nav-item">
+                    <router-link tag="a" to="/teams" class="nav-link">
+                        <i class="nav-icon fas fa-flag"></i>
+                        <p>Teams</p>
                     </router-link>
                 </li>
 

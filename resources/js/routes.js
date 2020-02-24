@@ -11,8 +11,16 @@ let routes = [
         component: require('./views/users').default
     },
     {
-        path: '/something-new',
-        component: require('./views/something-new').default
+        path: '/countries',
+        component: require('./views/countries').default
+    },
+    {
+        path: '/leagues',
+        component: require('./views/leagues').default
+    },
+    {
+        path: '/teams',
+        component: require('./views/teams').default
     }
 ];
 

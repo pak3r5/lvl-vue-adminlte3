@@ -31,3 +31,8 @@ Route::get('/home/', function () {
 
 Route::get('/users', 'UsersController@index');
 Route::post('/users', 'UsersController@create');
+
+Route::resource('countries', 'CountryController');
+Route::resource('leagues', 'LeagueController');
+Route::resource('teams', 'TeamController');
+

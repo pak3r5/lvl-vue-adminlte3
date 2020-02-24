@@ -16,6 +16,20 @@ class Form {
         this.errors = new Errors();
     }
 
+    clear(){
+        this.originalData=null;
+    }
+
+    fill(data) {
+        this.originalData = data;
+
+        for (let field in data) {
+            this[field] = data[field];
+        }
+
+        this.errors = new Errors();
+    }
+
 
     /**
      * Fetch all relevant data for the form.
