@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class MatchweekController extends Controller
+class MatchweeksController extends Controller
 {
     public function index() {
         $leagues = League::all();
@@ -28,12 +28,21 @@ class MatchweekController extends Controller
             'start' => ['required'],
             'end' => ['required'],
         ])->validate();
-        return Matchweek::create([
+
+        $mathweek = Matchweek::create([
             'name' => $request['name'],
             'league_id' => $request['league_id'],
             'start' => $start_date,
             'end' => $end_date,
         ]);
+
+
+        /*return Matchweek::create([
+            'name' => $request['name'],
+            'league_id' => $request['league_id'],
+            'start' => $start_date,
+            'end' => $end_date,
+        ]);*/
     }
 
     public function show($id)

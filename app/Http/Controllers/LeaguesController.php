@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\League;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class CountryController extends Controller
+class LeaguesController extends Controller
 {
-    public function index() {
-        return Country::latest()->get();
-    }
-
     public function store(Request $request)
     {
         Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'short_name' => ['required', 'string', 'max:3', 'unique:countries'],
+            'country_id' => ['required', 'integer'],
         ])->validate();
 
-        return Country::create([
+        return League::create([
             'name' => $request['name'],
-            'short_name' => $request['short_name'],
+            'country_id' => $request['country_id'],
         ]);
     }
 
@@ -35,20 +32,26 @@ class CountryController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
-            'short_name' => ['required', 'string', 'max:3',Rule::unique('countries','short_name')->ignore($uuid,'uuid')],
+            'country_id' => ['required', 'integer'],
         ]);
 
-        $country = Country::findOrFail($uuid);
+        $country = League::findOrFail($uuid);
 
         $country->update($request->all());
     }
 
     public function destroy($uuid)
     {
-        $country = Country::findOrFail($uuid);
-        $country->delete();
+        $league = League::findOrFail($uuid);
+        $league->delete();
         return response()->json([
-            'message' => 'Country deleted successfully'
+            'message' => 'League deleted successfully'
         ]);
+    }
+    public function index() {
+        $countries = Country::all();
+        $leagues = League::with('country')->get();
+        return compact('leagues', 'countries');
+        //return League::all();
     }
 }
