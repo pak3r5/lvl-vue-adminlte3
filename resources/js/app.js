@@ -3,11 +3,9 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  /
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 */
-
-
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 require('./bootstrap');
 
 // 1. Comment out this following line:

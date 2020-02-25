@@ -35,4 +35,5 @@ Route::post('/users', 'UsersController@create');
 Route::resource('countries', 'CountryController');
 Route::resource('leagues', 'LeagueController');
 Route::resource('teams', 'TeamController');
+Route::resource('matchweeks', 'MatchweekController');
 

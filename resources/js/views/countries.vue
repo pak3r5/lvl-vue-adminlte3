@@ -153,7 +153,7 @@
 
                         Toast.fire({
                             icon: 'success',
-                            title: 'User updated successfully'
+                            title: 'Country updated successfully'
                         })
 
                         Fire.$emit('AfterCreatedCountryLoadIt');

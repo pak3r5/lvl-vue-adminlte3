@@ -1,23 +1,23 @@
 <template>
-
     <div>
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Leagues</h1>
+                        <h1 class="m-0 text-dark">Matchweeks</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link to="../home">Home</router-link></li>
-                            <li class="breadcrumb-item active">Leagues</li>
+                            <li class="breadcrumb-item active">Matchweeks</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
+
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
@@ -35,21 +35,21 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Country</th>
+                                        <th>League</th>
                                         <th>Name</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="league in leagues">
-                                        <td>{{league.country.name}}</td>
-                                        <td>{{league.name}}</td>
+                                    <tr v-for="matchweek in matchweeks">
+                                        <td>{{matchweek.league.name}}</td>
+                                        <td>{{matchweek.name}}</td>
                                         <td>
-                                            <a href="#" data-id="user.uuid" @click="editModalWindow(league)">
+                                            <a href="#" data-id="user.uuid" @click="editModalWindow(matchweek)">
                                                 <i class="fa fa-edit blue"></i>
                                             </a>
                                             |
-                                            <a href="#" @click="deleteLeague(league.uuid)">
+                                            <a href="#" @click="deleteMatchweek(matchweek.uuid)">
                                                 <i class="fa fa-trash red"></i>
                                             </a>
 
@@ -67,40 +67,63 @@
                             <div class="modal-content">
                                 <div class="modal-header">
 
-                                    <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add New League</h5>
-                                    <h5 v-show="editMode" class="modal-title" id="addUpdateLabel">Update League</h5>
+                                    <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add New Matchweek</h5>
+                                    <h5 v-show="editMode" class="modal-title" id="addUpdateLabel">Update Matchweek</h5>
 
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
 
-                                <form @submit.prevent="editMode ? updateLeague() : createLeague()">
+                                <form @submit.prevent="editMode ? updateMatchweek() : createMatchweek()">
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <input v-model="form.name" type="text" name="name"
+                                            <input v-model="matchweek.name" type="text" name="name"
                                                    placeholder="Name"
-                                                   class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('name')" v-text="form.errors.get('name')"></span>
+                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('name') }">
+                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('name')" v-text="matchweek.errors.get('name')"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="custom-select form-control" v-model="matchweek.league_id" :class="{ 'is-invalid': matchweek.errors.has('league_id') }" name="league_id">
+                                                <option value="">Selecciona una liga</option>
+                                                <option v-for="league in leagues" v-bind:value="league.id">
+                                                    {{ league.name }}
+                                                </option>
+                                            </select>
+                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('league_id')" v-text="matchweek.errors.get('league_id')"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="matchweek.start" type="datetime-local" name="start"
+                                                   placeholder="start"
+                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('start') }">
+                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('start')" v-text="matchweek.errors.get('start')"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="matchweek.end" type="datetime-local" name="end"
+                                                   placeholder="end"
+                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('end') }">
+                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('end')" v-text="matchweek.errors.get('end')"></span>
                                         </div>
 
                                         <div class="form-group">
-                                            <select class="custom-select form-control" :class="{ 'is-invalid': form.errors.has('country_id') }" v-model="form.country_id">
-                                                <option value="">Selecciona un pais</option>
-                                                <option v-for="country in countries" v-bind:value="country.id">
-                                                    {{ country.name }}
-                                                </option>
-                                            </select>
-                                            <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></span>
+                                            <input v-model="matchweek.matchname" type="text" name="match[name]"
+                                                   placeholder="Name"
+                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('matchname') }">
+                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('matchname')" v-text="matchweek.errors.get('matchname')"></span>
                                         </div>
 
+                                        <div class="form-group">
+                                            <input v-model="matchweek.matchstart" type="datetime-local" name="match[start]"
+                                                   placeholder="start"
+                                                   class="form-control" >
+
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                         <button v-show="editMode" type="submit" class="btn btn-primary">Update</button>
                                         <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
                                     </div>
-
                                 </form>
 
                             </div>
@@ -119,43 +142,49 @@
         data() {
             return {
                 editMode: false,
-                countries:[],
                 leagues: [],
-                form: new Form({
+                matchweeks: [],
+                matchweek: new Form({
                     'name': '',
-                    'country_id': '',
+                    'league_id': '',
+                    'start': '',
+                    'end': '',
+                    'matchname': '',
+                    'matchstart': '',
+                    'local': [],
+                    'visitant':[],
                 })
             }
-
         },
-
         created() {
-            /*axios.get('/countries')
-                .then(({data}) => this.countries = data);*/
-            this.loadLeagues();
-
-            Fire.$on('AfterCreatedLeagueLoadIt',()=>{ //custom events fire on
-                this.loadLeagues();
+            this.loadMatchweek();
+            Fire.$on('AfterCreatedMatchweekLoadIt',()=>{ //custom events fire on
+                this.loadMatchweek();
             });
         },
         methods: {
-            editModalWindow(league) {
-                this.form.reset();
-                this.editMode = true
-                this.form.reset();
-                $('#addNew').modal('show');
-                this.form = new Form(league)
+            onSubmit() {
+                this.form
+                    .post('/matchweeks')
+                    .then(matchweek => this.matchweeks.push(matchweek));
             },
-            updateLeague() {
-                this.form.put('/leagues/' + this.form.uuid)
+            editModalWindow(matchweek) {
+                this.matchweek.reset();
+                this.editMode = true
+                this.matchweek.reset();
+                $('#addNew').modal('show');
+                this.form = new Form(matchweek)
+            },
+            updateMatchweek() {
+                this.matchweek.put('/matchweeks/' + this.matchweek.uuid)
                     .then(() => {
 
                         Toast.fire({
                             icon: 'success',
-                            title: 'League updated successfully'
+                            title: 'Matchweek updated successfully'
                         })
 
-                        Fire.$emit('AfterCreatedLeagueLoadIt');
+                        Fire.$emit('AfterCreatedMatchweekLoadIt');
 
                         $('#addNew').modal('hide');
                     })
@@ -165,44 +194,32 @@
             },
             openModalWindow() {
                 this.editMode = false
-                this.form.reset();
+                this.matchweek.reset();
                 $('#addNew').modal('show');
             },
-            loadLeagues() {
+            loadMatchweek() {
                 console.log("load information");
-                axios.get("/leagues")
-                    .then(({data}) => {console.log(data.leagues);this.leagues = data.leagues; this.countries = data.countries});
-                //pick data from controller and push it into users object
-
+                axios.get("/matchweeks")
+                    .then(({data}) => {this.matchweeks = data.matchweeks; this.leagues = data.leagues;});
             },
-
-            createLeague() {
-
+            createMatchweek() {
                 this.$Progress.start()
-
-                this.form.post('/leagues')
+                this.matchweek.post('/matchweeks')
                     .then(() => {
-
-                        Fire.$emit('AfterCreatedLeagueLoadIt'); //custom events
-
+                        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
                         Toast.fire({
                             icon: 'success',
-                            title: 'League created successfully'
+                            title: 'Matchweek created successfully'
                         })
-
                         this.$Progress.finish()
-
                         $('#addNew').modal('hide');
-
                     })
                     .catch(() => {
                         console.log("Error......")
                     })
-
-
                 //this.loadUsers();
             },
-            deleteLeague(uuid) {
+            deleteMatchweek(uuid) {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -212,21 +229,17 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
-
                     if (result.value) {
                         //Send Request to server
-                        axios.delete('/leagues/' + uuid)
+                        axios.delete('/matchweeks/' + uuid)
                             .then((response) => {
-                                console.log(response);
                                 Swal.fire(
                                     'Deleted!',
-                                    'League deleted successfully',
+                                    'Matchweek deleted successfully',
                                     'success'
                                 )
-                                this.loadLeagues();
-
-                            }).catch((error) => {
-                            console.log(error);
+                                this.loadMatchweek();
+                            }).catch(() => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
@@ -235,10 +248,8 @@
                             })
                         })
                     }
-
                 })
             }
         }
     }
-
 </script>

@@ -16,9 +16,10 @@ class CreateMatchweeksTable extends Migration
         Schema::create('matchweeks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->index();
+            $table->bigInteger('league_id')->unsigned();
+            $table->string('name');
             $table->dateTime('start');
             $table->dateTime('end');
-            $table->bigInteger('league_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('league_id')->references('id')->on('leagues');

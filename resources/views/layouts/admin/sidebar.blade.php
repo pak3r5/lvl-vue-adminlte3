@@ -59,6 +59,14 @@
                     </router-link>
                 </li>
 
+                <!-- New Sidebar Item -->
+                <li class="nav-item">
+                    <router-link tag="a" to="/matchweeks" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>Matchweeks</p>
+                    </router-link>
+                </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

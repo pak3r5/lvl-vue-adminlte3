@@ -2079,7 +2079,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.put('/countries/' + this.form.uuid).then(function () {
         Toast.fire({
           icon: 'success',
-          title: 'User updated successfully'
+          title: 'Country updated successfully'
         });
         Fire.$emit('AfterCreatedCountryLoadIt');
         $('#addNew').modal('hide');
@@ -2728,6 +2728,276 @@ __webpack_require__.r(__webpack_exports__);
             _this4.loadLeagues();
           })["catch"](function (error) {
             console.log(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              footer: '<a href>Why do I have this issue?</a>'
+            });
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/matchweeks.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/matchweeks.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      editMode: false,
+      leagues: [],
+      matchweeks: [],
+      matchweek: new Form({
+        'name': '',
+        'league_id': '',
+        'start': '',
+        'end': '',
+        'matchname': '',
+        'matchstart': '',
+        'local': [],
+        'visitant': []
+      })
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.loadMatchweek();
+    Fire.$on('AfterCreatedMatchweekLoadIt', function () {
+      //custom events fire on
+      _this.loadMatchweek();
+    });
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this2 = this;
+
+      this.form.post('/matchweeks').then(function (matchweek) {
+        return _this2.matchweeks.push(matchweek);
+      });
+    },
+    editModalWindow: function editModalWindow(matchweek) {
+      this.matchweek.reset();
+      this.editMode = true;
+      this.matchweek.reset();
+      $('#addNew').modal('show');
+      this.form = new Form(matchweek);
+    },
+    updateMatchweek: function updateMatchweek() {
+      this.matchweek.put('/matchweeks/' + this.matchweek.uuid).then(function () {
+        Toast.fire({
+          icon: 'success',
+          title: 'Matchweek updated successfully'
+        });
+        Fire.$emit('AfterCreatedMatchweekLoadIt');
+        $('#addNew').modal('hide');
+      })["catch"](function () {
+        console.log("Error.....");
+      });
+    },
+    openModalWindow: function openModalWindow() {
+      this.editMode = false;
+      this.matchweek.reset();
+      $('#addNew').modal('show');
+    },
+    loadMatchweek: function loadMatchweek() {
+      var _this3 = this;
+
+      console.log("load information");
+      axios.get("/matchweeks").then(function (_ref) {
+        var data = _ref.data;
+        _this3.matchweeks = data.matchweeks;
+        _this3.leagues = data.leagues;
+      });
+    },
+    createMatchweek: function createMatchweek() {
+      var _this4 = this;
+
+      this.$Progress.start();
+      this.matchweek.post('/matchweeks').then(function () {
+        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Matchweek created successfully'
+        });
+
+        _this4.$Progress.finish();
+
+        $('#addNew').modal('hide');
+      })["catch"](function () {
+        console.log("Error......");
+      }); //this.loadUsers();
+    },
+    deleteMatchweek: function deleteMatchweek(uuid) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          //Send Request to server
+          axios["delete"]('/matchweeks/' + uuid).then(function (response) {
+            Swal.fire('Deleted!', 'Matchweek deleted successfully', 'success');
+
+            _this5.loadMatchweek();
+          })["catch"](function () {
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
@@ -60220,7 +60490,12 @@ var render = function() {
                                     expression: "form.country_id"
                                   }
                                 ],
-                                staticClass: "custom-select",
+                                staticClass: "custom-select form-control",
+                                class: {
+                                  "is-invalid": _vm.form.errors.has(
+                                    "country_id"
+                                  )
+                                },
                                 on: {
                                   change: function($event) {
                                     var $$selectedVal = Array.prototype.filter
@@ -60350,6 +60625,607 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Country")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v(" ")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce& ***!
+  \********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
+              _c(
+                "li",
+                { staticClass: "breadcrumb-item" },
+                [
+                  _c("router-link", { attrs: { to: "../home" } }, [
+                    _vm._v("Home")
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "breadcrumb-item active" }, [
+                _vm._v("Matchweeks")
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "content" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: {
+                        "data-toggle": "modal",
+                        "data-target": "#addNew"
+                      },
+                      on: { click: _vm.openModalWindow }
+                    },
+                    [
+                      _vm._v("Add New "),
+                      _c("i", { staticClass: "fas fa-user-plus fa-fw" })
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "card-body table-responsive p-0",
+                  staticStyle: { height: "300px" }
+                },
+                [
+                  _c("table", { staticClass: "table table-hover" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.matchweeks, function(matchweek) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(matchweek.league.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(matchweek.name))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#", "data-id": "user.uuid" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editModalWindow(matchweek)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-edit blue" })]
+                            ),
+                            _vm._v(
+                              "\n                                        |\n                                        "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteMatchweek(matchweek.uuid)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash red" })]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "modal fade",
+              attrs: {
+                id: "addNew",
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "addNewLabel",
+                "aria-hidden": "true"
+              }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "modal-dialog modal-dialog-centered",
+                  attrs: { role: "document" }
+                },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c("div", { staticClass: "modal-header" }, [
+                      _c(
+                        "h5",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: !_vm.editMode,
+                              expression: "!editMode"
+                            }
+                          ],
+                          staticClass: "modal-title",
+                          attrs: { id: "addNewLabel" }
+                        },
+                        [_vm._v("Add New Matchweek")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "h5",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.editMode,
+                              expression: "editMode"
+                            }
+                          ],
+                          staticClass: "modal-title",
+                          attrs: { id: "addUpdateLabel" }
+                        },
+                        [_vm._v("Update Matchweek")]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(2)
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "form",
+                      {
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            _vm.editMode
+                              ? _vm.updateMatchweek()
+                              : _vm.createMatchweek()
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "modal-body" }, [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.matchweek.name,
+                                  expression: "matchweek.name"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.matchweek.errors.has("name")
+                              },
+                              attrs: {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Name"
+                              },
+                              domProps: { value: _vm.matchweek.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.matchweek,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.matchweek.errors.has("name")
+                              ? _c("span", {
+                                  staticClass: "invalid-feedback d-block",
+                                  attrs: { role: "alert" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.matchweek.errors.get("name")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.matchweek.league_id,
+                                    expression: "matchweek.league_id"
+                                  }
+                                ],
+                                staticClass: "custom-select form-control",
+                                class: {
+                                  "is-invalid": _vm.matchweek.errors.has(
+                                    "league_id"
+                                  )
+                                },
+                                attrs: { name: "league_id" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.matchweek,
+                                      "league_id",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Selecciona una liga")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.leagues, function(league) {
+                                  return _c(
+                                    "option",
+                                    { domProps: { value: league.id } },
+                                    [
+                                      _vm._v(
+                                        "\n                                                " +
+                                          _vm._s(league.name) +
+                                          "\n                                            "
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            ),
+                            _vm._v(" "),
+                            _vm.matchweek.errors.has("league_id")
+                              ? _c("span", {
+                                  staticClass: "invalid-feedback d-block",
+                                  attrs: { role: "alert" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.matchweek.errors.get("league_id")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.matchweek.start,
+                                  expression: "matchweek.start"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.matchweek.errors.has("start")
+                              },
+                              attrs: {
+                                type: "datetime-local",
+                                name: "start",
+                                placeholder: "start"
+                              },
+                              domProps: { value: _vm.matchweek.start },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.matchweek,
+                                    "start",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.matchweek.errors.has("start")
+                              ? _c("span", {
+                                  staticClass: "invalid-feedback d-block",
+                                  attrs: { role: "alert" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.matchweek.errors.get("start")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.matchweek.end,
+                                  expression: "matchweek.end"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.matchweek.errors.has("end")
+                              },
+                              attrs: {
+                                type: "datetime-local",
+                                name: "end",
+                                placeholder: "end"
+                              },
+                              domProps: { value: _vm.matchweek.end },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.matchweek,
+                                    "end",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.matchweek.errors.has("end")
+                              ? _c("span", {
+                                  staticClass: "invalid-feedback d-block",
+                                  attrs: { role: "alert" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.matchweek.errors.get("end")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.matchweek.matchname,
+                                  expression: "matchweek.matchname"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.matchweek.errors.has(
+                                  "matchname"
+                                )
+                              },
+                              attrs: {
+                                type: "text",
+                                name: "match[name]",
+                                placeholder: "Name"
+                              },
+                              domProps: { value: _vm.matchweek.matchname },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.matchweek,
+                                    "matchname",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.matchweek.errors.has("matchname")
+                              ? _c("span", {
+                                  staticClass: "invalid-feedback d-block",
+                                  attrs: { role: "alert" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.matchweek.errors.get("matchname")
+                                    )
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.matchweek.matchstart,
+                                  expression: "matchweek.matchstart"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "datetime-local",
+                                name: "match[start]",
+                                placeholder: "start"
+                              },
+                              domProps: { value: _vm.matchweek.matchstart },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.matchweek,
+                                    "matchstart",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: { type: "button", "data-dismiss": "modal" }
+                            },
+                            [_vm._v("Close")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.editMode,
+                                  expression: "editMode"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Update")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: !_vm.editMode,
+                                  expression: "!editMode"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Create")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("h1", { staticClass: "m-0 text-dark" }, [_vm._v("Matchweeks")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("League")]),
         _vm._v(" "),
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
@@ -76275,9 +77151,9 @@ __webpack_require__.r(__webpack_exports__);
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  /
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 */
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // 1. Comment out this following line:
 // window.Vue = require('vue');
 // 2. Add below the above commented-out line:
@@ -76472,6 +77348,9 @@ var routes = [{
 }, {
   path: '/teams',
   component: __webpack_require__(/*! ./views/teams */ "./resources/js/views/teams.vue")["default"]
+}, {
+  path: '/matchweeks',
+  component: __webpack_require__(/*! ./views/matchweeks */ "./resources/js/views/matchweeks.vue")["default"]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   base: '/admin/',
@@ -76969,6 +77848,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/matchweeks.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/views/matchweeks.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./matchweeks.vue?vue&type=template&id=81a7e4ce& */ "./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce&");
+/* harmony import */ var _matchweeks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./matchweeks.vue?vue&type=script&lang=js& */ "./resources/js/views/matchweeks.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _matchweeks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/matchweeks.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/matchweeks.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/views/matchweeks.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_matchweeks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./matchweeks.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/matchweeks.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_matchweeks_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce& ***!
+  \**************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./matchweeks.vue?vue&type=template&id=81a7e4ce& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/matchweeks.vue?vue&type=template&id=81a7e4ce&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_matchweeks_vue_vue_type_template_id_81a7e4ce___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/views/teams.vue":
 /*!**************************************!*\
   !*** ./resources/js/views/teams.vue ***!
@@ -77125,8 +78073,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\LARAVEL\login\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\LARAVEL\login\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
