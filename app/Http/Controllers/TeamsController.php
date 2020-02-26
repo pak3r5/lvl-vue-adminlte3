@@ -4,22 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\League;
+use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class LeagueController extends Controller
+class TeamsController extends Controller
 {
     public function store(Request $request)
     {
         Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'country_id' => ['required', 'integer'],
+            'league_id' => ['required', 'integer'],
         ])->validate();
 
-        return League::create([
+        return Team::create([
             'name' => $request['name'],
-            'country_id' => $request['country_id'],
+            'league_id' => $request['league_id'],
         ]);
     }
 
@@ -32,26 +33,26 @@ class LeagueController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
-            'country_id' => ['required', 'integer'],
+            'league_id' => ['required', 'integer'],
         ]);
 
-        $country = League::findOrFail($uuid);
+        $country = Team::findOrFail($uuid);
 
         $country->update($request->all());
     }
 
     public function destroy($uuid)
     {
-        $league = League::findOrFail($uuid);
-        $league->delete();
+        $team = Team::findOrFail($uuid);
+        $team->delete();
         return response()->json([
-            'message' => 'League deleted successfully'
+            'message' => 'Team deleted successfully'
         ]);
     }
     public function index() {
-        $countries = Country::all();
-        $leagues = League::with('country')->get();
-        return compact('leagues', 'countries');
+        $leagues = League::all();
+        $teams = Team::with('league')->get();
+        return compact('teams', 'leagues');
         //return League::all();
     }
 }

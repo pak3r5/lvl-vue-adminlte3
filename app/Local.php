@@ -61,13 +61,16 @@ class Local extends Model
         });
     }
 
+
     public function matches()
     {
         return $this->morphMany(\App\Match::class, 'matchtable');
     }
 
+
     public function match()
     {
         return $this->belongsTo(\App\Match::class, 'match_id', 'id');
     }
+
 }

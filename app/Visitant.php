@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 class Visitant extends Model
 {
+
     use SoftDeletes;
 
     public $table = 'visitants';
@@ -65,8 +66,10 @@ class Visitant extends Model
         return $this->morphMany(\App\Match::class, 'matchtable');
     }
 
+
     public function match()
     {
         return $this->belongsTo(\App\Match::class, 'match_id', 'id');
     }
+
 }

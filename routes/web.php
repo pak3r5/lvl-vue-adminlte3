@@ -32,8 +32,8 @@ Route::get('/home/', function () {
 Route::get('/users', 'UsersController@index');
 Route::post('/users', 'UsersController@create');
 
-Route::resource('countries', 'CountryController');
-Route::resource('leagues', 'LeagueController');
-Route::resource('teams', 'TeamController');
-Route::resource('matchweeks', 'MatchweekController');
+Route::resource('countries', 'CountriesController');
+Route::resource('leagues', 'LeaguesController');
+Route::resource('teams', 'TeamsController');
+Route::resource('matchweeks', 'MatchweeksController');
 

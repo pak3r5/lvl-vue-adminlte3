@@ -10,7 +10,8 @@ class Match extends Model
 {
     use SoftDeletes;
 
-    public $table = 'matchs';
+    public $table = 'matches';
+
 
     protected $dates = ['deleted_at'];
 
@@ -63,6 +64,7 @@ class Match extends Model
             $model->uuid = (string) (string) Str::uuid();
         });
     }
+
 
     public function matchweek()
     {
