@@ -2628,7 +2628,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2891,27 +2890,138 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editMode: false,
       leagues: [],
+      teams: [],
       matchweeks: [],
+      totalmatch: 9,
+      resultset: [{
+        "name": '1',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '2',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '3',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '4',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '5',
+        "start": '',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '6',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '7',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '8',
+        "local": '',
+        "visitant": ''
+      }, {
+        "name": '9',
+        "local": '',
+        "visitant": ''
+      }],
       matchweek: new Form({
-        'name': '',
-        'league_id': '',
-        'start': '',
-        'end': '',
-        'matchname': '',
-        'matchstart': '',
-        'local': [],
-        'visitant': []
+        "name": '',
+        "league_id": '',
+        "match": [{
+          "name": '1',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '2',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '3',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '4',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '5',
+          "start": '',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '6',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '7',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '8',
+          "local": '',
+          "visitant": ''
+        }, {
+          "name": '9',
+          "local": '',
+          "visitant": ''
+        }]
       })
     };
   },
   created: function created() {
     var _this = this;
 
+    console.log(this.matchweek.matchname);
     this.loadMatchweek();
     Fire.$on('AfterCreatedMatchweekLoadIt', function () {
       //custom events fire on
@@ -2958,29 +3068,27 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         _this3.matchweeks = data.matchweeks;
         _this3.leagues = data.leagues;
+        _this3.teams = data.teams;
       });
     },
     createMatchweek: function createMatchweek() {
-      var _this4 = this;
-
+      console.log(this.matchweek.data());
       this.$Progress.start();
-      this.matchweek.post('/matchweeks').then(function () {
-        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
-
+      this.matchweek.post('/matchweeks').then(function (response) {
+        /*Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
         Toast.fire({
-          icon: 'success',
-          title: 'Matchweek created successfully'
-        });
-
-        _this4.$Progress.finish();
-
-        $('#addNew').modal('hide');
+            icon: 'success',
+            title: 'Matchweek created successfully'
+        })
+        this.$Progress.finish()
+        $('#addNew').modal('hide');*/
+        console.log(response);
       })["catch"](function () {
         console.log("Error......");
       }); //this.loadUsers();
     },
     deleteMatchweek: function deleteMatchweek(uuid) {
-      var _this5 = this;
+      var _this4 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -2996,7 +3104,7 @@ __webpack_require__.r(__webpack_exports__);
           axios["delete"]('/matchweeks/' + uuid).then(function (response) {
             Swal.fire('Deleted!', 'Matchweek deleted successfully', 'success');
 
-            _this5.loadMatchweek();
+            _this4.loadMatchweek();
           })["catch"](function () {
             Swal.fire({
               icon: 'error',
@@ -59664,7 +59772,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
@@ -60305,7 +60413,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "card-body table-responsive p-0",
-                  staticStyle: { height: "300px" }
+                  staticStyle: { height: "auto" }
                 },
                 [
                   _c("table", { staticClass: "table table-hover" }, [
@@ -60622,7 +60730,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("Country")]),
         _vm._v(" "),
@@ -60726,60 +60834,53 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "card-body table-responsive p-0",
-                  staticStyle: { height: "300px" }
-                },
-                [
-                  _c("table", { staticClass: "table table-hover" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.matchweeks, function(matchweek) {
-                        return _c("tr", [
-                          _c("td", [_vm._v(_vm._s(matchweek.league.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(matchweek.name))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#", "data-id": "user.uuid" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.editModalWindow(matchweek)
-                                  }
+              _c("div", { staticClass: "card-body table-responsive p-0" }, [
+                _c("table", { staticClass: "table table-hover" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.matchweeks, function(matchweek) {
+                      return _c("tr", [
+                        _c("td", [_vm._v(_vm._s(matchweek.league.name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(matchweek.name))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#", "data-id": "user.uuid" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.editModalWindow(matchweek)
                                 }
-                              },
-                              [_c("i", { staticClass: "fa fa-edit blue" })]
-                            ),
-                            _vm._v(
-                              "\n                                        |\n                                        "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deleteMatchweek(matchweek.uuid)
-                                  }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-edit blue" })]
+                          ),
+                          _vm._v(
+                            "\n                                        |\n                                        "
+                          ),
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteMatchweek(matchweek.uuid)
                                 }
-                              },
-                              [_c("i", { staticClass: "fa fa-trash red" })]
-                            )
-                          ])
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-trash red" })]
+                          )
                         ])
-                      }),
-                      0
-                    )
-                  ])
-                ]
-              )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
             ])
           ]),
           _vm._v(" "),
@@ -60799,7 +60900,7 @@ var render = function() {
               _c(
                 "div",
                 {
-                  staticClass: "modal-dialog modal-dialog-centered",
+                  staticClass: "modal-dialog  modal-xl modal-dialog-centered",
                   attrs: { role: "document" }
                 },
                 [
@@ -60855,304 +60956,417 @@ var render = function() {
                         }
                       },
                       [
-                        _c("div", { staticClass: "modal-body" }, [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.matchweek.name,
-                                  expression: "matchweek.name"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.matchweek.errors.has("name")
-                              },
-                              attrs: {
-                                type: "text",
-                                name: "name",
-                                placeholder: "Name"
-                              },
-                              domProps: { value: _vm.matchweek.name },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.matchweek,
-                                    "name",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
+                        _c(
+                          "div",
+                          { staticClass: "modal-body" },
+                          [
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-2" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", { attrs: { for: "name" } }, [
+                                    _vm._v("Jornada")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.matchweek.name,
+                                        expression: "matchweek.name"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.matchweek.errors.has(
+                                        "name"
+                                      )
+                                    },
+                                    attrs: {
+                                      type: "text",
+                                      name: "name",
+                                      id: "name",
+                                      placeholder: "Name"
+                                    },
+                                    domProps: { value: _vm.matchweek.name },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.matchweek,
+                                          "name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has("name")
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get("name")
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-10" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", { attrs: { for: "league_id" } }, [
+                                    _vm._v("Liga")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.matchweek.league_id,
+                                          expression: "matchweek.league_id"
+                                        }
+                                      ],
+                                      staticClass: "custom-select form-control",
+                                      class: {
+                                        "is-invalid": _vm.matchweek.errors.has(
+                                          "league_id"
+                                        )
+                                      },
+                                      attrs: {
+                                        name: "league_id",
+                                        id: "league_id"
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.matchweek,
+                                            "league_id",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("option", { attrs: { value: "" } }, [
+                                        _vm._v("Selecciona una liga")
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.leagues, function(league) {
+                                        return _c(
+                                          "option",
+                                          { domProps: { value: league.id } },
+                                          [
+                                            _vm._v(
+                                              "\n                                                        " +
+                                                _vm._s(league.name) +
+                                                "\n                                                    "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has("league_id")
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "league_id"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ])
+                              ])
+                            ]),
                             _vm._v(" "),
-                            _vm.matchweek.errors.has("name")
-                              ? _c("span", {
-                                  staticClass: "invalid-feedback d-block",
-                                  attrs: { role: "alert" },
-                                  domProps: {
-                                    textContent: _vm._s(
-                                      _vm.matchweek.errors.get("name")
+                            _vm._l(_vm.resultset, function(value, index) {
+                              return _c("div", { staticClass: "row" }, [
+                                _c("div", { staticClass: "col-2" }, [
+                                  _c("div", { staticClass: "form-group" }, [
+                                    _c(
+                                      "label",
+                                      { attrs: { for: "match.name." + index } },
+                                      [_vm._v("Partido " + _vm._s(index + 1))]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.resultset[index].name,
+                                          expression: "resultset[index].name"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      class: {
+                                        "is-invalid": _vm.matchweek.errors.has(
+                                          "match[index].name"
+                                        )
+                                      },
+                                      attrs: {
+                                        type: "hidden",
+                                        name: "match.name[" + index + "]",
+                                        id: "match.name." + index,
+                                        placeholder: "Partido"
+                                      },
+                                      domProps: {
+                                        value: _vm.resultset[index].name
+                                      },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.resultset[index],
+                                            "name",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.matchweek.errors.has(
+                                      "match[index].name"
                                     )
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.matchweek.league_id,
-                                    expression: "matchweek.league_id"
-                                  }
-                                ],
-                                staticClass: "custom-select form-control",
-                                class: {
-                                  "is-invalid": _vm.matchweek.errors.has(
-                                    "league_id"
-                                  )
-                                },
-                                attrs: { name: "league_id" },
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.$set(
-                                      _vm.matchweek,
-                                      "league_id",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("option", { attrs: { value: "" } }, [
-                                  _vm._v("Selecciona una liga")
+                                      ? _c("span", {
+                                          staticClass:
+                                            "invalid-feedback d-block",
+                                          attrs: { role: "alert" },
+                                          domProps: {
+                                            textContent: _vm._s(
+                                              _vm.matchweek.errors.get(
+                                                "match[index].name"
+                                              )
+                                            )
+                                          }
+                                        })
+                                      : _vm._e()
+                                  ])
                                 ]),
                                 _vm._v(" "),
-                                _vm._l(_vm.leagues, function(league) {
-                                  return _c(
-                                    "option",
-                                    { domProps: { value: league.id } },
+                                _c("div", { staticClass: "col-5" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "match.local." + index } },
+                                    [_vm._v("Local")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.resultset[index].local,
+                                          expression: "resultset[index].local"
+                                        }
+                                      ],
+                                      staticClass: "custom-select form-control",
+                                      class: {
+                                        "is-invalid": _vm.matchweek.errors.has(
+                                          "match[index].local"
+                                        )
+                                      },
+                                      attrs: {
+                                        name: "match.local[" + index + "]",
+                                        id: "match.local." + index
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.resultset[index],
+                                            "local",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
                                     [
-                                      _vm._v(
-                                        "\n                                                " +
-                                          _vm._s(league.name) +
-                                          "\n                                            "
-                                      )
-                                    ]
+                                      _c("option", { attrs: { value: "" } }, [
+                                        _vm._v("Selecciona un equipo")
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.teams, function(team) {
+                                        return _c(
+                                          "option",
+                                          { domProps: { value: team.id } },
+                                          [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(team.name) +
+                                                "\n                                                "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has("match[index].local")
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "match[index].local"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-5" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      attrs: { for: "match.visitant." + index }
+                                    },
+                                    [_vm._v("Visitante")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.resultset[index].visitant,
+                                          expression:
+                                            "resultset[index].visitant"
+                                        }
+                                      ],
+                                      staticClass: "custom-select form-control",
+                                      class: {
+                                        "is-invalid": _vm.matchweek.errors.has(
+                                          "match[index].visitant"
+                                        )
+                                      },
+                                      attrs: {
+                                        name: "match.visitant[" + index + "]",
+                                        id: "match.visitant." + index
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.resultset[index],
+                                            "visitant",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("option", { attrs: { value: "" } }, [
+                                        _vm._v("Selecciona un equipo")
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.teams, function(team) {
+                                        return _c(
+                                          "option",
+                                          { domProps: { value: team.id } },
+                                          [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(team.name) +
+                                                "\n                                                "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has(
+                                    "match[index].visitant"
                                   )
-                                })
-                              ],
-                              2
-                            ),
-                            _vm._v(" "),
-                            _vm.matchweek.errors.has("league_id")
-                              ? _c("span", {
-                                  staticClass: "invalid-feedback d-block",
-                                  attrs: { role: "alert" },
-                                  domProps: {
-                                    textContent: _vm._s(
-                                      _vm.matchweek.errors.get("league_id")
-                                    )
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.matchweek.start,
-                                  expression: "matchweek.start"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.matchweek.errors.has("start")
-                              },
-                              attrs: {
-                                type: "datetime-local",
-                                name: "start",
-                                placeholder: "start"
-                              },
-                              domProps: { value: _vm.matchweek.start },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.matchweek,
-                                    "start",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.matchweek.errors.has("start")
-                              ? _c("span", {
-                                  staticClass: "invalid-feedback d-block",
-                                  attrs: { role: "alert" },
-                                  domProps: {
-                                    textContent: _vm._s(
-                                      _vm.matchweek.errors.get("start")
-                                    )
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.matchweek.end,
-                                  expression: "matchweek.end"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.matchweek.errors.has("end")
-                              },
-                              attrs: {
-                                type: "datetime-local",
-                                name: "end",
-                                placeholder: "end"
-                              },
-                              domProps: { value: _vm.matchweek.end },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.matchweek,
-                                    "end",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.matchweek.errors.has("end")
-                              ? _c("span", {
-                                  staticClass: "invalid-feedback d-block",
-                                  attrs: { role: "alert" },
-                                  domProps: {
-                                    textContent: _vm._s(
-                                      _vm.matchweek.errors.get("end")
-                                    )
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.matchweek.matchname,
-                                  expression: "matchweek.matchname"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              class: {
-                                "is-invalid": _vm.matchweek.errors.has(
-                                  "matchname"
-                                )
-                              },
-                              attrs: {
-                                type: "text",
-                                name: "match[name]",
-                                placeholder: "Name"
-                              },
-                              domProps: { value: _vm.matchweek.matchname },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.matchweek,
-                                    "matchname",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.matchweek.errors.has("matchname")
-                              ? _c("span", {
-                                  staticClass: "invalid-feedback d-block",
-                                  attrs: { role: "alert" },
-                                  domProps: {
-                                    textContent: _vm._s(
-                                      _vm.matchweek.errors.get("matchname")
-                                    )
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.matchweek.matchstart,
-                                  expression: "matchweek.matchstart"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "datetime-local",
-                                name: "match[start]",
-                                placeholder: "start"
-                              },
-                              domProps: { value: _vm.matchweek.matchstart },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.matchweek,
-                                    "matchstart",
-                                    $event.target.value
-                                  )
-                                }
-                              }
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "match[index].visitant"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ])
+                              ])
                             })
-                          ])
-                        ]),
+                          ],
+                          2
+                        ),
                         _vm._v(" "),
                         _c("div", { staticClass: "modal-footer" }, [
                           _c(
@@ -61223,7 +61437,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("League")]),
         _vm._v(" "),
@@ -61331,7 +61545,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "card-body table-responsive p-0",
-                  staticStyle: { height: "300px" }
+                  staticStyle: { height: "auto" }
                 },
                 [
                   _c("table", { staticClass: "table table-hover" }, [
@@ -61641,7 +61855,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
@@ -61704,7 +61918,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "card-body table-responsive p-0",
-                  staticStyle: { height: "300px" }
+                  staticStyle: { height: "auto" }
                 },
                 [
                   _c("table", { staticClass: "table table-hover" }, [
@@ -62009,7 +62223,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
+    return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
         _vm._v(" "),

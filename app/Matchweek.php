@@ -17,8 +17,8 @@ class Matchweek extends Model
     public $fillable = [
         'league_id',
         'name',
-        'start',
-        'end'
+        //'start',
+        //'end'
     ];
 
     /**
@@ -31,8 +31,8 @@ class Matchweek extends Model
         'league_id' => 'integer',
         'name' => 'string',
         'uuid' => 'uuid',
-        'start'=>'date',
-        'end'=>'date',
+        //'start'=>'date',
+        //'end'=>'date',
     ];
 
     /**
@@ -72,6 +72,11 @@ class Matchweek extends Model
     public function getDateFormat()
     {
         return 'Y-m-d H:i:s';
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(\App\Match::class);
     }
 
 }

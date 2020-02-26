@@ -31,9 +31,9 @@
                                 </div>
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0" style="height: 300px;">
+                            <div class="card-body table-responsive p-0">
                                 <table class="table table-hover">
-                                    <thead>
+                                    <thead class="thead-dark">
                                     <tr>
                                         <th>League</th>
                                         <th>Name</th>
@@ -63,7 +63,7 @@
                         <!-- /.card -->
                     </div>
                     <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog  modal-xl modal-dialog-centered" role="document" >
                             <div class="modal-content">
                                 <div class="modal-header">
 
@@ -77,46 +77,84 @@
 
                                 <form @submit.prevent="editMode ? updateMatchweek() : createMatchweek()">
                                     <div class="modal-body">
-                                        <div class="form-group">
-                                            <input v-model="matchweek.name" type="text" name="name"
-                                                   placeholder="Name"
-                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('name') }">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('name')" v-text="matchweek.errors.get('name')"></span>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label for="name">Jornada</label>
+                                                    <input v-model="matchweek.name" type="text" name="name" id="name"
+                                                           placeholder="Name"
+                                                           class="form-control" :class="{ 'is-invalid': matchweek.errors.has('name') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('name')" v-text="matchweek.errors.get('name')"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="form-group">
+                                                    <label for="league_id">Liga</label>
+                                                    <select class="custom-select form-control" v-model="matchweek.league_id" :class="{ 'is-invalid': matchweek.errors.has('league_id') }" name="league_id"  id="league_id">
+                                                        <option value="">Selecciona una liga</option>
+                                                        <option v-for="league in leagues" v-bind:value="league.id">
+                                                            {{ league.name }}
+                                                        </option>
+                                                    </select>
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('league_id')" v-text="matchweek.errors.get('league_id')"></span>
+                                                </div>
+                                            </div>
+                                            <!--<div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="start">Fecha de inicio:</label>
+                                                    <input v-model="matchweek.start" type="datetime-local" name="start" id="start"
+                                                           placeholder="start"
+                                                           class="form-control" :class="{ 'is-invalid': matchweek.errors.has('start') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('start')" v-text="matchweek.errors.get('start')"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="end">Fecha Final</label>
+                                                    <input v-model="matchweek.end" type="datetime-local" name="end" id="end"
+                                                           placeholder="end"
+                                                           class="form-control" :class="{ 'is-invalid': matchweek.errors.has('end') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('end')" v-text="matchweek.errors.get('end')"></span>
+                                                </div>
+                                            </div>-->
                                         </div>
-                                        <div class="form-group">
-                                            <select class="custom-select form-control" v-model="matchweek.league_id" :class="{ 'is-invalid': matchweek.errors.has('league_id') }" name="league_id">
-                                                <option value="">Selecciona una liga</option>
-                                                <option v-for="league in leagues" v-bind:value="league.id">
-                                                    {{ league.name }}
-                                                </option>
-                                            </select>
-                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('league_id')" v-text="matchweek.errors.get('league_id')"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input v-model="matchweek.start" type="datetime-local" name="start"
-                                                   placeholder="start"
-                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('start') }">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('start')" v-text="matchweek.errors.get('start')"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input v-model="matchweek.end" type="datetime-local" name="end"
-                                                   placeholder="end"
-                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('end') }">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('end')" v-text="matchweek.errors.get('end')"></span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input v-model="matchweek.matchname" type="text" name="match[name]"
-                                                   placeholder="Name"
-                                                   class="form-control" :class="{ 'is-invalid': matchweek.errors.has('matchname') }">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('matchname')" v-text="matchweek.errors.get('matchname')"></span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input v-model="matchweek.matchstart" type="datetime-local" name="match[start]"
-                                                   placeholder="start"
-                                                   class="form-control" >
-
+                                        <div class="row" v-for="(value, index) in resultset">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label :for="'match.name.'+index">Partido {{index + 1}}</label>
+                                                    <input v-model="resultset[index].name" type="hidden" :name="'match.name['+index+']'" :id="'match.name.'+index"
+                                                           placeholder="Partido" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].name') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].name')" v-text="matchweek.errors.get('match[index].name')"></span>
+                                                </div>
+                                            </div>
+                                            <!--<div class="col-4">
+                                                <div class="form-group">
+                                                    <label :for="'match.start.'+index">Fecha</label>
+                                                    <input v-model="resultset[index].start" type="datetime-local" :name="'match.start.'+index" :id="'match.start.'+index"
+                                                           placeholder="Fecha" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].start') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].start')" v-text="matchweek.errors.get('match[index].start')"></span>
+                                                </div>
+                                            </div>-->
+                                            <div class="col-5">
+                                                <label :for="'match.local.'+index">Local</label>
+                                                <select class="custom-select form-control" :name="'match.local['+index+']'" :id="'match.local.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].local') }" v-model="resultset[index].local">
+                                                    <option value="">Selecciona un equipo</option>
+                                                    <option v-for="team in teams" v-bind:value="team.id">
+                                                        {{ team.name }}
+                                                    </option>
+                                                </select>
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].local')" v-text="matchweek.errors.get('match[index].local')"></span>
+                                            </div>
+                                            <div class="col-5">
+                                                <label :for="'match.visitant.'+index">Visitante</label>
+                                                <select class="custom-select form-control" :name="'match.visitant['+index+']'" :id="'match.visitant.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].visitant') }" v-model="resultset[index].visitant">
+                                                    <option value="">Selecciona un equipo</option>
+                                                    <option v-for="team in teams" v-bind:value="team.id">
+                                                        {{ team.name }}
+                                                    </option>
+                                                </select>
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].visitant')" v-text="matchweek.errors.get('match[index].visitant')"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -143,20 +181,93 @@
             return {
                 editMode: false,
                 leagues: [],
+                teams:[],
                 matchweeks: [],
+                totalmatch:9,
+                resultset:[{
+                    "name":'1',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'2',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'3',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'4',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'5',
+                    "start":'',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'6',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'7',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'8',
+                    "local": '',
+                    "visitant":''
+                },{
+                    "name":'9',
+                    "local": '',
+                    "visitant":''
+                }],
                 matchweek: new Form({
-                    'name': '',
-                    'league_id': '',
-                    'start': '',
-                    'end': '',
-                    'matchname': '',
-                    'matchstart': '',
-                    'local': [],
-                    'visitant':[],
+                    "name": '',
+                    "league_id": '',
+                    "match":[{
+                        "name":'1',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'2',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'3',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'4',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'5',
+                        "start":'',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'6',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'7',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'8',
+                        "local": '',
+                        "visitant":''
+                    },{
+                        "name":'9',
+                        "local": '',
+                        "visitant":''
+                    }],
                 })
             }
         },
         created() {
+            console.log(this.matchweek.matchname);
             this.loadMatchweek();
             Fire.$on('AfterCreatedMatchweekLoadIt',()=>{ //custom events fire on
                 this.loadMatchweek();
@@ -200,19 +311,21 @@
             loadMatchweek() {
                 console.log("load information");
                 axios.get("/matchweeks")
-                    .then(({data}) => {this.matchweeks = data.matchweeks; this.leagues = data.leagues;});
+                    .then(({data}) => {this.matchweeks = data.matchweeks; this.leagues = data.leagues;this.teams = data.teams;});
             },
             createMatchweek() {
+                console.log(this.matchweek.data());
                 this.$Progress.start()
                 this.matchweek.post('/matchweeks')
-                    .then(() => {
-                        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
+                    .then((response) => {
+                        /*Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
                         Toast.fire({
                             icon: 'success',
                             title: 'Matchweek created successfully'
                         })
                         this.$Progress.finish()
-                        $('#addNew').modal('hide');
+                        $('#addNew').modal('hide');*/
+                        console.log(response);
                     })
                     .catch(() => {
                         console.log("Error......")

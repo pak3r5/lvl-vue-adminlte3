@@ -31,9 +31,9 @@
                                 </div>
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0" style="height: 300px;">
+                            <div class="card-body table-responsive p-0" style="height: auto;">
                                 <table class="table table-hover">
-                                    <thead>
+                                    <thead class="thead-dark">
                                     <tr>
                                         <th>Country</th>
                                         <th>Name</th>
@@ -93,7 +93,6 @@
                                             </select>
                                             <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('country_id')" v-text="form.errors.get('country_id')"></span>
                                         </div>
-
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
