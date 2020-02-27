@@ -78,5 +78,4 @@ class Matchweek extends Model
     {
         return $this->hasMany(\App\Match::class, 'matchweek_id', 'id');
     }
-
 }

@@ -16,8 +16,8 @@ class Match extends Model
 
     public $fillable = [
         'matchweek_id',
-        //'name',
-        //'start',
+        'local_id',
+        'visitant_id',
     ];
 
     /**
@@ -27,10 +27,13 @@ class Match extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'matchweek_id' => 'integer',
-        //'name' => 'string',
         'uuid' => 'uuid',
-        //'start'=>'date',
+        'matchweek_id' => 'integer',
+        'local_id' => 'integer',
+        'local' => 'integer',
+        'visitant_id' => 'integer',
+        'visitant' => 'integer',
+
     ];
 
     /**
@@ -67,25 +70,13 @@ class Match extends Model
         return $this->belongsTo(\App\Matchweek::class, 'matchweek_id', 'id');
     }
 
-    public function getDateFormat()
+    public function local()
     {
-        return 'Y-m-d H:i:s';
+        return $this->belongsTo(\App\Team::class, 'local_id', 'id');
     }
 
-    public function matchtable()
+    public function visitant()
     {
-        return $this->morphTo();
-    }
-
-    public function locals()
-    {
-        return $this->hasMany(\App\Match::class, 'matchtable_id', 'id')
-            ->whereMatchtableType(\App\Local::class);
-    }
-
-    public function visitants()
-    {
-        return $this->hasMany(\App\Match::class, 'matchtable_id', 'id')
-            ->whereMatchtableType(\App\Visitant::class);
+        return $this->belongsTo(\App\Team::class, 'visitant_id', 'id');
     }
 }

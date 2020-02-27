@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMatchesTable extends Migration
+class CreateTestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,14 +16,16 @@ class CreateMatchesTable extends Migration
         Schema::create('matches', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->index();
-            $table->dateTime('start');
-            $table->bigInteger('matchweek_id')->unsigned(); //matchweek_uuid
-            $table->bigInteger('matchtable_id')->unsigned();
-            $table->string('matchtable_type');
-            $table->integer('result');
+            $table->bigInteger('matchweek_id')->unsigned();
+            $table->bigInteger('local_id')->unsigned();
+            $table->integer('local')->unsigned();
+            $table->bigInteger('visitant_id')->unsigned();
+            $table->integer('visitant')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('matchweek_id')->references('id')->on('matchweeks');
+            $table->foreign('local_id')->references('id')->on('teams');
+            $table->foreign('visitant_id')->references('id')->on('teams');
         });
     }
 
@@ -34,6 +36,6 @@ class CreateMatchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matches');
+        Schema::dropIfExists('test');
     }
 }

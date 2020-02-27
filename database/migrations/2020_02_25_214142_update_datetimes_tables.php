@@ -16,10 +16,6 @@ class UpdateDatetimesTables extends Migration
         Schema::table('matchweeks', function (Blueprint $table) {
             $table->dropColumn(['start','end']);
         });
-
-        Schema::table('matches', function (Blueprint $table) {
-            $table->dropColumn('start');
-        });
     }
 
     /**
@@ -32,10 +28,6 @@ class UpdateDatetimesTables extends Migration
         Schema::create('matchweeks', function (Blueprint $table) {
             $table->dateTime('start');
             $table->dateTime('end');
-        });
-
-        Schema::create('matches', function (Blueprint $table) {
-            $table->dateTime('start');
         });
     }
 }

@@ -167,11 +167,8 @@
                 $('#addNew').modal('show');
             },
             loadTeams() {
-                console.log("load information");
                 axios.get("/teams")
                     .then(({data}) => {this.teams = data.teams; this.leagues = data.leagues;});
-                //pick data from controller and push it into users object
-
             },
 
             createTeam() {

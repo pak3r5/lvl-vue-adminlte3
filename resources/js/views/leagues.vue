@@ -168,11 +168,8 @@
                 $('#addNew').modal('show');
             },
             loadLeagues() {
-                console.log("load information");
                 axios.get("/leagues")
-                    .then(({data}) => {console.log(data.leagues);this.leagues = data.leagues; this.countries = data.countries});
-                //pick data from controller and push it into users object
-
+                    .then(({data}) => {this.leagues = data.leagues; this.countries = data.countries});
             },
 
             createLeague() {
@@ -216,7 +213,6 @@
                         //Send Request to server
                         axios.delete('/leagues/' + uuid)
                             .then((response) => {
-                                console.log(response);
                                 Swal.fire(
                                     'Deleted!',
                                     'League deleted successfully',
@@ -225,7 +221,6 @@
                                 this.loadLeagues();
 
                             }).catch((error) => {
-                            console.log(error);
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',

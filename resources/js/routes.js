@@ -25,10 +25,6 @@ let routes = [
     {
         path: '/matchweeks',
         component: require('./views/matchweeks').default
-    },
-    {
-        path: '/matches',
-        component: require('./views/matches').default
     }
 ];
 

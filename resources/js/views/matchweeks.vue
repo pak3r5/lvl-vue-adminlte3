@@ -199,15 +199,16 @@
         },
         methods: {
             editModalWindow(matchweek) {
-                console.log(matchweek);
+                let aux = this;
                 this.matchweek.reset();
                 this.editMode = true
                 this.matchweek.reset();
                 $('#addNew').modal('show');
                 this.matchweek = new Form(matchweek);
-                console.log(matchweek.matches[0]);
-                this.resultset[0].local = matchweek.matches[0].local;
-                this.resultset[0].visitant = matchweek.matches[0].visitant;
+                matchweek.matches.forEach( function(value, index, array) {
+                    aux.resultset[index].local = matchweek.matches[index].local.id;
+                    aux.resultset[index].visitant = matchweek.matches[index].visitant.id;
+                });
             },
             updateMatchweek() {
                 this.matchweek.put('/matchweeks/' + this.matchweek.uuid)
@@ -237,7 +238,6 @@
                     this.resultset.push(test);
                 }
             },
-
             createMatchweek() {
                 this.$Progress.start();
                 this.matchweek.originalData.name=this.matchweek.name;
