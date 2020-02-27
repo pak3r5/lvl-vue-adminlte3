@@ -17,7 +17,7 @@ class CountriesController extends Controller
     {
         Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'short_name' => ['required', 'string', 'max:3', 'unique:countries'],
+            'short_name' => ['required', 'string', 'min:3'],
         ])->validate();
 
         return Country::create([

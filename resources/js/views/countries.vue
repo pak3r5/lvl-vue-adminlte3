@@ -135,11 +135,6 @@
             });
         },
         methods: {
-            onSubmit() {
-                this.form
-                    .post('/countries')
-                    .then(country => this.countries.push(country));
-            },
             editModalWindow(country) {
                 this.form.reset();
                 this.editMode = true
@@ -170,7 +165,6 @@
                 $('#addNew').modal('show');
             },
             loadCountries() {
-                console.log("load information");
                 axios.get("/countries")
                     .then(({data}) => this.countries = data);
                 //pick data from controller and push it into users object
@@ -199,7 +193,6 @@
                     .catch(() => {
                         console.log("Error......")
                     })
-
 
                 //this.loadUsers();
             },

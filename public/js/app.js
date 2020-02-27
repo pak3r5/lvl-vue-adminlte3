@@ -2061,13 +2061,6 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    onSubmit: function onSubmit() {
-      var _this2 = this;
-
-      this.form.post('/countries').then(function (country) {
-        return _this2.countries.push(country);
-      });
-    },
     editModalWindow: function editModalWindow(country) {
       this.form.reset();
       this.editMode = true;
@@ -2093,16 +2086,15 @@ __webpack_require__.r(__webpack_exports__);
       $('#addNew').modal('show');
     },
     loadCountries: function loadCountries() {
-      var _this3 = this;
+      var _this2 = this;
 
-      console.log("load information");
       axios.get("/countries").then(function (_ref) {
         var data = _ref.data;
-        return _this3.countries = data;
+        return _this2.countries = data;
       }); //pick data from controller and push it into users object
     },
     createCountry: function createCountry() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.$Progress.start();
       this.form.post('/countries').then(function () {
@@ -2113,7 +2105,7 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Country created successfully'
         });
 
-        _this4.$Progress.finish();
+        _this3.$Progress.finish();
 
         $('#addNew').modal('hide');
       })["catch"](function () {
@@ -2121,7 +2113,7 @@ __webpack_require__.r(__webpack_exports__);
       }); //this.loadUsers();
     },
     deleteCountry: function deleteCountry(uuid) {
-      var _this5 = this;
+      var _this4 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -2137,7 +2129,7 @@ __webpack_require__.r(__webpack_exports__);
           axios["delete"]('/countries/' + uuid).then(function (response) {
             Swal.fire('Deleted!', 'Country deleted successfully', 'success');
 
-            _this5.loadCountries();
+            _this4.loadCountries();
           })["catch"](function () {
             Swal.fire({
               icon: 'error',
