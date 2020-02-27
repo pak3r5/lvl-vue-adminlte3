@@ -2936,92 +2936,17 @@ __webpack_require__.r(__webpack_exports__);
       teams: [],
       matchweeks: [],
       totalmatch: 9,
-      resultset: [{
-        "name": '1',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '2',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '3',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '4',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '5',
-        "start": '',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '6',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '7',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '8',
-        "local": '',
-        "visitant": ''
-      }, {
-        "name": '9',
-        "local": '',
-        "visitant": ''
-      }],
+      resultset: [],
       matchweek: new Form({
         "name": '',
         "league_id": '',
-        "match": [{
-          "name": '1',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '2',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '3',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '4',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '5',
-          "start": '',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '6',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '7',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '8',
-          "local": '',
-          "visitant": ''
-        }, {
-          "name": '9',
-          "local": '',
-          "visitant": ''
-        }]
+        "match": []
       })
     };
   },
   created: function created() {
     var _this = this;
 
-    console.log(this.matchweek.matchname);
     this.loadMatchweek();
     Fire.$on('AfterCreatedMatchweekLoadIt', function () {
       //custom events fire on
@@ -3029,13 +2954,6 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    onSubmit: function onSubmit() {
-      var _this2 = this;
-
-      this.form.post('/matchweeks').then(function (matchweek) {
-        return _this2.matchweeks.push(matchweek);
-      });
-    },
     editModalWindow: function editModalWindow(matchweek) {
       this.matchweek.reset();
       this.editMode = true;
@@ -3061,20 +2979,30 @@ __webpack_require__.r(__webpack_exports__);
       $('#addNew').modal('show');
     },
     loadMatchweek: function loadMatchweek() {
-      var _this3 = this;
+      var _this2 = this;
 
-      console.log("load information");
       axios.get("/matchweeks").then(function (_ref) {
         var data = _ref.data;
-        _this3.matchweeks = data.matchweeks;
-        _this3.leagues = data.leagues;
-        _this3.teams = data.teams;
+        _this2.matchweeks = data.matchweeks;
+        _this2.leagues = data.leagues;
+        _this2.teams = data.teams;
       });
+
+      for (var i = 0; i < this.totalmatch; i++) {
+        var test = JSON.parse(JSON.stringify({
+          name: i,
+          local: '',
+          visitant: ''
+        }));
+        this.matchweek.match.push(test);
+        this.resultset.push(test);
+      }
     },
     createMatchweek: function createMatchweek() {
-      console.log(this.matchweek.data());
       this.$Progress.start();
-      this.matchweek.post('/matchweeks').then(function (response) {
+      this.matchweek.originalData.name = this.matchweek.name;
+      this.matchweek.originalData['league_id'] = this.matchweek.league_id;
+      this.matchweek.postArray('/matchweeks').then(function (response) {
         /*Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
         Toast.fire({
             icon: 'success',
@@ -3088,7 +3016,7 @@ __webpack_require__.r(__webpack_exports__);
       }); //this.loadUsers();
     },
     deleteMatchweek: function deleteMatchweek(uuid) {
-      var _this4 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: 'Are you sure?',
@@ -3104,7 +3032,7 @@ __webpack_require__.r(__webpack_exports__);
           axios["delete"]('/matchweeks/' + uuid).then(function (response) {
             Swal.fire('Deleted!', 'Matchweek deleted successfully', 'success');
 
-            _this4.loadMatchweek();
+            _this3.loadMatchweek();
           })["catch"](function () {
             Swal.fire({
               icon: 'error',
@@ -59482,7 +59410,7 @@ var render = function() {
                 "div",
                 {
                   staticClass: "card-body table-responsive p-0",
-                  staticStyle: { height: "300px" }
+                  staticStyle: { height: "auto" }
                 },
                 [
                   _c("table", { staticClass: "table table-hover" }, [
@@ -60972,8 +60900,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.matchweek.name,
-                                        expression: "matchweek.name"
+                                        value: _vm.matchweek["name"],
+                                        expression: "matchweek['name']"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -60988,7 +60916,7 @@ var render = function() {
                                       id: "name",
                                       placeholder: "Name"
                                     },
-                                    domProps: { value: _vm.matchweek.name },
+                                    domProps: { value: _vm.matchweek["name"] },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
@@ -77765,6 +77693,17 @@ function () {
       return this.submit('post', url);
     }
     /**
+     * Send a POST request to the given URL.
+     * .
+     * @param {string} url
+     */
+
+  }, {
+    key: "postArray",
+    value: function postArray(url) {
+      return this.submitArray('post', url);
+    }
+    /**
      * Send a PUT request to the given URL.
      * .
      * @param {string} url
@@ -77816,6 +77755,30 @@ function () {
           resolve(response.data);
         })["catch"](function (error) {
           _this.onFail(error.response.data.errors);
+
+          reject(error.response.data.errors);
+        });
+      });
+    }
+    /**
+     * Submit the form.
+     *
+     * @param {string} requestType
+     * @param {string} url
+     */
+
+  }, {
+    key: "submitArray",
+    value: function submitArray(requestType, url) {
+      var _this2 = this;
+
+      return new Promise(function (resolve, reject) {
+        axios[requestType](url, _this2.originalData).then(function (response) {
+          _this2.onSuccess(response.data);
+
+          resolve(response.data);
+        })["catch"](function (error) {
+          _this2.onFail(error.response.data.errors);
 
           reject(error.response.data.errors);
         });
@@ -78287,8 +78250,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\LARAVEL\login\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\LARAVEL\login\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

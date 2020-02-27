@@ -81,7 +81,7 @@
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     <label for="name">Jornada</label>
-                                                    <input v-model="matchweek.name" type="text" name="name" id="name"
+                                                    <input v-model="matchweek['name']" type="text" name="name" id="name"
                                                            placeholder="Name"
                                                            class="form-control" :class="{ 'is-invalid': matchweek.errors.has('name') }">
                                                     <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('name')" v-text="matchweek.errors.get('name')"></span>
@@ -184,101 +184,21 @@
                 teams:[],
                 matchweeks: [],
                 totalmatch:9,
-                resultset:[{
-                    "name":'1',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'2',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'3',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'4',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'5',
-                    "start":'',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'6',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'7',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'8',
-                    "local": '',
-                    "visitant":''
-                },{
-                    "name":'9',
-                    "local": '',
-                    "visitant":''
-                }],
+                resultset:[],
                 matchweek: new Form({
                     "name": '',
                     "league_id": '',
-                    "match":[{
-                        "name":'1',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'2',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'3',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'4',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'5',
-                        "start":'',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'6',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'7',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'8',
-                        "local": '',
-                        "visitant":''
-                    },{
-                        "name":'9',
-                        "local": '',
-                        "visitant":''
-                    }],
+                    "match":[],
                 })
             }
         },
         created() {
-            console.log(this.matchweek.matchname);
             this.loadMatchweek();
             Fire.$on('AfterCreatedMatchweekLoadIt',()=>{ //custom events fire on
                 this.loadMatchweek();
             });
         },
         methods: {
-            onSubmit() {
-                this.form
-                    .post('/matchweeks')
-                    .then(matchweek => this.matchweeks.push(matchweek));
-            },
             editModalWindow(matchweek) {
                 this.matchweek.reset();
                 this.editMode = true
@@ -309,14 +229,20 @@
                 $('#addNew').modal('show');
             },
             loadMatchweek() {
-                console.log("load information");
                 axios.get("/matchweeks")
                     .then(({data}) => {this.matchweeks = data.matchweeks; this.leagues = data.leagues;this.teams = data.teams;});
+                for (let i = 0; i < this.totalmatch; i++) {
+                    let test = JSON.parse(JSON.stringify({name: i,local:'',visitant:''}));
+                    this.matchweek.match.push(test);
+                    this.resultset.push(test);
+                }
             },
+
             createMatchweek() {
-                console.log(this.matchweek.data());
-                this.$Progress.start()
-                this.matchweek.post('/matchweeks')
+                this.$Progress.start();
+                this.matchweek.originalData.name=this.matchweek.name;
+                this.matchweek.originalData['league_id']=this.matchweek.league_id;
+                this.matchweek.postArray('/matchweeks')
                     .then((response) => {
                         /*Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
                         Toast.fire({

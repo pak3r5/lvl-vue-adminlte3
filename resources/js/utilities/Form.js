@@ -8,11 +8,9 @@ class Form {
      */
     constructor(data) {
         this.originalData = data;
-
         for (let field in data) {
             this[field] = data[field];
         }
-
         this.errors = new Errors();
     }
 
@@ -66,6 +64,15 @@ class Form {
         return this.submit('post', url);
     }
 
+    /**
+     * Send a POST request to the given URL.
+     * .
+     * @param {string} url
+     */
+    postArray(url) {
+        return this.submitArray('post', url);
+    }
+
 
     /**
      * Send a PUT request to the given URL.
@@ -106,6 +113,28 @@ class Form {
     submit(requestType, url) {
         return new Promise((resolve, reject) => {
             axios[requestType](url, this.data())
+                .then(response => {
+                    this.onSuccess(response.data);
+
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    this.onFail(error.response.data.errors);
+
+                    reject(error.response.data.errors);
+                });
+        });
+    }
+
+    /**
+     * Submit the form.
+     *
+     * @param {string} requestType
+     * @param {string} url
+     */
+    submitArray(requestType, url) {
+        return new Promise((resolve, reject) => {
+            axios[requestType](url, this.originalData)
                 .then(response => {
                     this.onSuccess(response.data);
 

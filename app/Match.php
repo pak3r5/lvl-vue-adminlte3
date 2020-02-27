@@ -12,14 +12,12 @@ class Match extends Model
 
     public $table = 'matches';
 
-
     protected $dates = ['deleted_at'];
 
     public $fillable = [
         'matchweek_id',
-        'name',
+        //'name',
         //'start',
-        //'end'
     ];
 
     /**
@@ -30,10 +28,9 @@ class Match extends Model
     protected $casts = [
         'id' => 'integer',
         'matchweek_id' => 'integer',
-        'name' => 'string',
+        //'name' => 'string',
         'uuid' => 'uuid',
         //'start'=>'date',
-        //'end'=>'date',
     ];
 
     /**
@@ -65,10 +62,9 @@ class Match extends Model
         });
     }
 
-
     public function matchweek()
     {
-        return $this->belongsTo(\App\League::class, 'matchweek_id', 'id');
+        return $this->belongsTo(\App\Matchweek::class, 'matchweek_id', 'id');
     }
 
     public function getDateFormat()

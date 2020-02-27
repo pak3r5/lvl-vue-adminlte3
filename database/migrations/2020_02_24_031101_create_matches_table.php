@@ -17,7 +17,7 @@ class CreateMatchesTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->index();
             $table->dateTime('start');
-            $table->bigInteger('matchweek_id')->unsigned();
+            $table->bigInteger('matchweek_id')->unsigned(); //matchweek_uuid
             $table->bigInteger('matchtable_id')->unsigned();
             $table->string('matchtable_type');
             $table->integer('result');

@@ -16,8 +16,8 @@ class Visitant extends Model
     protected $dates = ['deleted_at'];
 
     public $fillable = [
-        'match_id',
-        'league_id',
+        //'match_id',
+        'team_id',
     ];
 
     /**
@@ -27,39 +27,9 @@ class Visitant extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'match_id' => 'integer',
-        'league_id' => 'integer',
-        'uuid' => 'uuid',
+        //'match_id' => 'integer',
+        'team_id' => 'integer',
     ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-
-    ];
-
-    protected $guarded = [];
-
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
-
-    public function getKeyName()
-    {
-        return 'uuid';
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-        self::creating(function ($model) {
-            $model->uuid = (string) (string) Str::uuid();
-        });
-    }
 
     public function matches()
     {
@@ -67,9 +37,9 @@ class Visitant extends Model
     }
 
 
-    public function match()
+    /*public function match()
     {
         return $this->belongsTo(\App\Match::class, 'match_id', 'id');
-    }
+    }*/
 
 }

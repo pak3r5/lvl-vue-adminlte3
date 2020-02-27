@@ -76,7 +76,7 @@ class Matchweek extends Model
 
     public function matches()
     {
-        return $this->hasMany(\App\Match::class);
+        return $this->hasMany(\App\Match::class, 'matchweek_id', 'id');
     }
 
 }

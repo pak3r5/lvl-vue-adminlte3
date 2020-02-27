@@ -35,9 +35,9 @@ class LeaguesController extends Controller
             'country_id' => ['required', 'integer'],
         ]);
 
-        $country = League::findOrFail($uuid);
+        $league = League::findOrFail($uuid);
 
-        $country->update($request->all());
+        $league->update($request->all());
     }
 
     public function destroy($uuid)
