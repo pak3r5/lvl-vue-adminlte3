@@ -76,4 +76,16 @@ class Match extends Model
     {
         return $this->morphTo();
     }
+
+    public function locals()
+    {
+        return $this->hasMany(\App\Match::class, 'matchtable_id', 'id')
+            ->whereMatchtableType(\App\Local::class);
+    }
+
+    public function visitants()
+    {
+        return $this->hasMany(\App\Match::class, 'matchtable_id', 'id')
+            ->whereMatchtableType(\App\Visitant::class);
+    }
 }

@@ -30,16 +30,16 @@ class Local extends Model
         'team_id' => 'integer',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function team()
+    {
+        return $this->belongsTo(\App\Team::class, 'team_id', 'id');
+    }
 
     public function matches()
     {
-        return $this->morphMany(\App\Match::class, 'matchtable');
+        return $this->morphOne(\App\Match::class, 'matchtable');
     }
-
-/*
-    public function match()
-    {
-        return $this->belongsTo(\App\Match::class, 'match_id', 'id');
-    }*/
-
 }

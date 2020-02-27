@@ -43,7 +43,7 @@
                                     <tbody>
                                     <tr v-for="team in teams">
                                         <td>{{team.name}}</td>
-                                        <td>{{team.name}}</td>
+                                        <td>{{team.league.name}}</td>
                                         <td>
                                             <a href="#" data-id="user.uuid" @click="editModalWindow(team)">
                                                 <i class="fa fa-edit blue"></i>

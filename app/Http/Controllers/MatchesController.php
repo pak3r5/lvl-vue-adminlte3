@@ -48,6 +48,7 @@ class MatchesController extends Controller
         //$countries = Country::all();
         //$leagues = League::with('country')->get();
         //return compact('leagues', 'countries');
-        return Match::all();
+        return Match::select('name')->with(['locals','visitants'])->get();
+        return Match::with('matchtable')->get();
     }
 }

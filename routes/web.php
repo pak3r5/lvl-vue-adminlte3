@@ -36,4 +36,5 @@ Route::resource('countries', 'CountriesController');
 Route::resource('leagues', 'LeaguesController');
 Route::resource('teams', 'TeamsController');
 Route::resource('matchweeks', 'MatchweeksController');
+Route::resource('matches', 'MatchesController');
 

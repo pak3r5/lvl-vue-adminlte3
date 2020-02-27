@@ -17,7 +17,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
@@ -200,23 +199,24 @@
         },
         methods: {
             editModalWindow(matchweek) {
+                console.log(matchweek);
                 this.matchweek.reset();
                 this.editMode = true
                 this.matchweek.reset();
                 $('#addNew').modal('show');
-                this.form = new Form(matchweek)
+                this.matchweek = new Form(matchweek);
+                console.log(matchweek.matches[0]);
+                this.resultset[0].local = matchweek.matches[0].local;
+                this.resultset[0].visitant = matchweek.matches[0].visitant;
             },
             updateMatchweek() {
                 this.matchweek.put('/matchweeks/' + this.matchweek.uuid)
                     .then(() => {
-
                         Toast.fire({
                             icon: 'success',
                             title: 'Matchweek updated successfully'
                         })
-
                         Fire.$emit('AfterCreatedMatchweekLoadIt');
-
                         $('#addNew').modal('hide');
                     })
                     .catch(() => {
@@ -244,19 +244,17 @@
                 this.matchweek.originalData['league_id']=this.matchweek.league_id;
                 this.matchweek.postArray('/matchweeks')
                     .then((response) => {
-                        /*Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
+                        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
                         Toast.fire({
                             icon: 'success',
                             title: 'Matchweek created successfully'
                         })
                         this.$Progress.finish()
-                        $('#addNew').modal('hide');*/
-                        console.log(response);
+                        $('#addNew').modal('hide');
                     })
                     .catch(() => {
                         console.log("Error......")
                     })
-                //this.loadUsers();
             },
             deleteMatchweek(uuid) {
                 Swal.fire({

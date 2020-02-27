@@ -31,15 +31,18 @@ class Visitant extends Model
         'team_id' => 'integer',
     ];
 
-    public function matches()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function team()
     {
-        return $this->morphMany(\App\Match::class, 'matchtable');
+        return $this->belongsTo(\App\Team::class, 'team_id', 'id');
     }
 
-
-    /*public function match()
+    public function matches()
     {
-        return $this->belongsTo(\App\Match::class, 'match_id', 'id');
-    }*/
+        return $this->morphOne(\App\Match::class, 'matchtable');
+    }
+
 
 }
