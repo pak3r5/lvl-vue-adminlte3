@@ -2914,7 +2914,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2949,8 +2948,10 @@ __webpack_require__.r(__webpack_exports__);
       $('#addNew').modal('show');
       this.matchweek = new Form(matchweek);
       matchweek.matches.forEach(function (value, index, array) {
-        aux.resultset[index].local = matchweek.matches[index].local.id;
-        aux.resultset[index].visitant = matchweek.matches[index].visitant.id;
+        aux.resultset[index].local_id = matchweek.matches[index].locals.id;
+        aux.resultset[index].local = matchweek.matches[index].local;
+        aux.resultset[index].visitant_id = matchweek.matches[index].visitants.id;
+        aux.resultset[index].visitant = matchweek.matches[index].visitant;
       });
     },
     updateMatchweek: function updateMatchweek() {
@@ -2983,8 +2984,10 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.totalmatch; i++) {
         var test = JSON.parse(JSON.stringify({
           name: i,
-          local: '',
-          visitant: ''
+          local_id: '',
+          local: '0',
+          visitant_id: '',
+          visitant: '0'
         }));
         this.matchweek.match.push(test);
         this.resultset.push(test);
@@ -61034,170 +61037,64 @@ var render = function() {
                             _vm._v(" "),
                             _vm._l(_vm.resultset, function(value, index) {
                               return _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-2" }, [
-                                  _c("div", { staticClass: "form-group" }, [
-                                    _c(
-                                      "label",
-                                      { attrs: { for: "match.name." + index } },
-                                      [_vm._v("Partido " + _vm._s(index + 1))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.resultset[index].name,
-                                          expression: "resultset[index].name"
-                                        }
-                                      ],
-                                      staticClass: "form-control",
-                                      class: {
-                                        "is-invalid": _vm.matchweek.errors.has(
-                                          "match[index].name"
-                                        )
-                                      },
-                                      attrs: {
-                                        type: "hidden",
-                                        name: "match.name[" + index + "]",
-                                        id: "match.name." + index,
-                                        placeholder: "Partido"
-                                      },
-                                      domProps: {
-                                        value: _vm.resultset[index].name
-                                      },
-                                      on: {
-                                        input: function($event) {
-                                          if ($event.target.composing) {
-                                            return
-                                          }
-                                          _vm.$set(
-                                            _vm.resultset[index],
-                                            "name",
-                                            $event.target.value
-                                          )
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _vm.matchweek.errors.has(
-                                      "match[index].name"
-                                    )
-                                      ? _c("span", {
-                                          staticClass:
-                                            "invalid-feedback d-block",
-                                          attrs: { role: "alert" },
-                                          domProps: {
-                                            textContent: _vm._s(
-                                              _vm.matchweek.errors.get(
-                                                "match[index].name"
-                                              )
-                                            )
-                                          }
-                                        })
-                                      : _vm._e()
-                                  ])
-                                ]),
-                                _vm._v(" "),
                                 _c("div", { staticClass: "col-5" }, [
                                   _c(
                                     "label",
-                                    { attrs: { for: "match.local." + index } },
-                                    [_vm._v("Local")]
+                                    { attrs: { for: "match.name." + index } },
+                                    [_vm._v("Partido " + _vm._s(index + 1))]
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.resultset[index].local,
-                                          expression: "resultset[index].local"
-                                        }
-                                      ],
-                                      staticClass: "custom-select form-control",
-                                      class: {
-                                        "is-invalid": _vm.matchweek.errors.has(
-                                          "match[index].local"
-                                        )
-                                      },
-                                      attrs: {
-                                        name: "match.local[" + index + "]",
-                                        id: "match.local." + index
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.resultset[index],
-                                            "local",
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.resultset[index].name,
+                                        expression: "resultset[index].name"
                                       }
-                                    },
-                                    [
-                                      _c("option", { attrs: { value: "" } }, [
-                                        _vm._v("Selecciona un equipo")
-                                      ]),
-                                      _vm._v(" "),
-                                      _vm._l(_vm.teams, function(team) {
-                                        return _c(
-                                          "option",
-                                          { domProps: { value: team.id } },
-                                          [
-                                            _vm._v(
-                                              "\n                                                    " +
-                                                _vm._s(team.name) +
-                                                "\n                                                "
-                                            )
-                                          ]
-                                        )
-                                      })
                                     ],
-                                    2
-                                  ),
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.matchweek.errors.has(
+                                        "match[index].name"
+                                      )
+                                    },
+                                    attrs: {
+                                      type: "hidden",
+                                      name: "match.name[" + index + "]",
+                                      id: "match.name." + index,
+                                      placeholder: "Partido"
+                                    },
+                                    domProps: {
+                                      value: _vm.resultset[index].name
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.resultset[index],
+                                          "name",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
                                   _vm._v(" "),
-                                  _vm.matchweek.errors.has("match[index].local")
+                                  _vm.matchweek.errors.has("match[index].name")
                                     ? _c("span", {
                                         staticClass: "invalid-feedback d-block",
                                         attrs: { role: "alert" },
                                         domProps: {
                                           textContent: _vm._s(
                                             _vm.matchweek.errors.get(
-                                              "match[index].local"
+                                              "match[index].name"
                                             )
                                           )
                                         }
                                       })
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-5" }, [
-                                  _c(
-                                    "label",
-                                    {
-                                      attrs: { for: "match.visitant." + index }
-                                    },
-                                    [_vm._v("Visitante")]
-                                  ),
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c(
                                     "select",
@@ -61206,20 +61103,20 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.resultset[index].visitant,
+                                          value: _vm.resultset[index].local_id,
                                           expression:
-                                            "resultset[index].visitant"
+                                            "resultset[index].local_id"
                                         }
                                       ],
                                       staticClass: "custom-select form-control",
                                       class: {
                                         "is-invalid": _vm.matchweek.errors.has(
-                                          "match[index].visitant"
+                                          "match[index].local_id"
                                         )
                                       },
                                       attrs: {
-                                        name: "match.visitant[" + index + "]",
-                                        id: "match.visitant." + index
+                                        name: "match.local_id[" + index + "]",
+                                        id: "match.local_id." + index
                                       },
                                       on: {
                                         change: function($event) {
@@ -61239,7 +61136,7 @@ var render = function() {
                                             })
                                           _vm.$set(
                                             _vm.resultset[index],
-                                            "visitant",
+                                            "local_id",
                                             $event.target.multiple
                                               ? $$selectedVal
                                               : $$selectedVal[0]
@@ -61270,6 +61167,130 @@ var render = function() {
                                   ),
                                   _vm._v(" "),
                                   _vm.matchweek.errors.has(
+                                    "match[index].local_id"
+                                  )
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "match[index].local_id"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-1" }, [
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "match.local." + index } },
+                                    [_vm._v(" ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.resultset[index].local,
+                                        expression: "resultset[index].local"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.matchweek.errors.has(
+                                        "match[index].local"
+                                      )
+                                    },
+                                    attrs: {
+                                      type: "text",
+                                      name: "match.local[" + index + "]",
+                                      id: "match.local." + index,
+                                      placeholder: "Local"
+                                    },
+                                    domProps: {
+                                      value: _vm.resultset[index].local
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.resultset[index],
+                                          "local",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has("match[index].local")
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "match[index].local"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-1" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      attrs: { for: "match.visitant." + index }
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.resultset[index].visitant,
+                                        expression: "resultset[index].visitant"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    class: {
+                                      "is-invalid": _vm.matchweek.errors.has(
+                                        "match[index].visitant"
+                                      )
+                                    },
+                                    attrs: {
+                                      type: "text",
+                                      name: "match.visitant[" + index + "]",
+                                      id: "match.visitant." + index,
+                                      placeholder: "Local"
+                                    },
+                                    domProps: {
+                                      value: _vm.resultset[index].visitant
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.resultset[index],
+                                          "visitant",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has(
                                     "match[index].visitant"
                                   )
                                     ? _c("span", {
@@ -61279,6 +61300,106 @@ var render = function() {
                                           textContent: _vm._s(
                                             _vm.matchweek.errors.get(
                                               "match[index].visitant"
+                                            )
+                                          )
+                                        }
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-5" }, [
+                                  _c(
+                                    "label",
+                                    {
+                                      attrs: {
+                                        for: "match.visitant_id." + index
+                                      }
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value:
+                                            _vm.resultset[index].visitant_id,
+                                          expression:
+                                            "resultset[index].visitant_id"
+                                        }
+                                      ],
+                                      staticClass: "custom-select form-control",
+                                      class: {
+                                        "is-invalid": _vm.matchweek.errors.has(
+                                          "match[index].visitant_id"
+                                        )
+                                      },
+                                      attrs: {
+                                        name:
+                                          "match.visitant_id[" + index + "]",
+                                        id: "match.visitant_id." + index
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.resultset[index],
+                                            "visitant_id",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("option", { attrs: { value: "" } }, [
+                                        _vm._v("Selecciona un equipo")
+                                      ]),
+                                      _vm._v(" "),
+                                      _vm._l(_vm.teams, function(team) {
+                                        return _c(
+                                          "option",
+                                          { domProps: { value: team.id } },
+                                          [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(team.name) +
+                                                "\n                                                "
+                                            )
+                                          ]
+                                        )
+                                      })
+                                    ],
+                                    2
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.matchweek.errors.has(
+                                    "match[index].visitant_id"
+                                  )
+                                    ? _c("span", {
+                                        staticClass: "invalid-feedback d-block",
+                                        attrs: { role: "alert" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.matchweek.errors.get(
+                                              "match[index].visitant_id"
                                             )
                                           )
                                         }

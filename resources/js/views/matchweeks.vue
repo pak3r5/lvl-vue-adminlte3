@@ -118,41 +118,40 @@
                                             </div>-->
                                         </div>
                                         <div class="row" v-for="(value, index) in resultset">
-                                            <div class="col-2">
-                                                <div class="form-group">
-                                                    <label :for="'match.name.'+index">Partido {{index + 1}}</label>
-                                                    <input v-model="resultset[index].name" type="hidden" :name="'match.name['+index+']'" :id="'match.name.'+index"
-                                                           placeholder="Partido" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].name') }">
-                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].name')" v-text="matchweek.errors.get('match[index].name')"></span>
-                                                </div>
-                                            </div>
-                                            <!--<div class="col-4">
-                                                <div class="form-group">
-                                                    <label :for="'match.start.'+index">Fecha</label>
-                                                    <input v-model="resultset[index].start" type="datetime-local" :name="'match.start.'+index" :id="'match.start.'+index"
-                                                           placeholder="Fecha" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].start') }">
-                                                    <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].start')" v-text="matchweek.errors.get('match[index].start')"></span>
-                                                </div>
-                                            </div>-->
                                             <div class="col-5">
-                                                <label :for="'match.local.'+index">Local</label>
-                                                <select class="custom-select form-control" :name="'match.local['+index+']'" :id="'match.local.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].local') }" v-model="resultset[index].local">
+                                                <label :for="'match.name.'+index">Partido {{index + 1}}</label>
+                                                <input v-model="resultset[index].name" type="hidden" :name="'match.name['+index+']'" :id="'match.name.'+index"
+                                                       placeholder="Partido" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].name') }">
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].name')" v-text="matchweek.errors.get('match[index].name')"></span>
+                                                <select class="custom-select form-control" :name="'match.local_id['+index+']'" :id="'match.local_id.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].local_id') }" v-model="resultset[index].local_id">
                                                     <option value="">Selecciona un equipo</option>
                                                     <option v-for="team in teams" v-bind:value="team.id">
                                                         {{ team.name }}
                                                     </option>
                                                 </select>
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].local_id')" v-text="matchweek.errors.get('match[index].local_id')"></span>
+                                            </div>
+                                            <div class="col-1">
+                                                <label :for="'match.local.'+index">&nbsp;</label>
+                                                <input v-model="resultset[index].local" type="text" :name="'match.local['+index+']'" :id="'match.local.'+index"
+                                                       placeholder="Local" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].local') }">
                                                 <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].local')" v-text="matchweek.errors.get('match[index].local')"></span>
                                             </div>
+                                            <div class="col-1">
+                                                <label :for="'match.visitant.'+index">&nbsp;</label>
+                                                <input v-model="resultset[index].visitant" type="text" :name="'match.visitant['+index+']'" :id="'match.visitant.'+index"
+                                                       placeholder="Local" class="form-control" :class="{ 'is-invalid': matchweek.errors.has('match[index].visitant') }">
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].visitant')" v-text="matchweek.errors.get('match[index].visitant')"></span>
+                                            </div>
                                             <div class="col-5">
-                                                <label :for="'match.visitant.'+index">Visitante</label>
-                                                <select class="custom-select form-control" :name="'match.visitant['+index+']'" :id="'match.visitant.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].visitant') }" v-model="resultset[index].visitant">
+                                                <label :for="'match.visitant_id.'+index">&nbsp;</label>
+                                                <select class="custom-select form-control" :name="'match.visitant_id['+index+']'" :id="'match.visitant_id.'+index" :class="{ 'is-invalid': matchweek.errors.has('match[index].visitant_id') }" v-model="resultset[index].visitant_id">
                                                     <option value="">Selecciona un equipo</option>
                                                     <option v-for="team in teams" v-bind:value="team.id">
                                                         {{ team.name }}
                                                     </option>
                                                 </select>
-                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].visitant')" v-text="matchweek.errors.get('match[index].visitant')"></span>
+                                                <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('match[index].visitant_id')" v-text="matchweek.errors.get('match[index].visitant_id')"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -206,8 +205,10 @@
                 $('#addNew').modal('show');
                 this.matchweek = new Form(matchweek);
                 matchweek.matches.forEach( function(value, index, array) {
-                    aux.resultset[index].local = matchweek.matches[index].local.id;
-                    aux.resultset[index].visitant = matchweek.matches[index].visitant.id;
+                    aux.resultset[index].local_id = matchweek.matches[index].locals.id;
+                    aux.resultset[index].local = matchweek.matches[index].local;
+                    aux.resultset[index].visitant_id = matchweek.matches[index].visitants.id;
+                    aux.resultset[index].visitant = matchweek.matches[index].visitant;
                 });
             },
             updateMatchweek() {
@@ -233,7 +234,7 @@
                 axios.get("/matchweeks")
                     .then(({data}) => {this.matchweeks = data.matchweeks; this.leagues = data.leagues;this.teams = data.teams;});
                 for (let i = 0; i < this.totalmatch; i++) {
-                    let test = JSON.parse(JSON.stringify({name: i,local:'',visitant:''}));
+                    let test = JSON.parse(JSON.stringify({name: i,local_id:'',local:'0',visitant_id:'',visitant:'0'}));
                     this.matchweek.match.push(test);
                     this.resultset.push(test);
                 }

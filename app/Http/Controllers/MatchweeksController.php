@@ -16,7 +16,7 @@ class MatchweeksController extends Controller
     public function index() {
         $leagues = League::all();
         $teams = Team::orderBy('name')->get();
-        $matchweeks = Matchweek::with(['league','matches.local','matches.visitant'])->get();
+        $matchweeks = Matchweek::with(['league','matches.locals','matches.visitants'])->get();
         return compact('matchweeks', 'leagues','teams');
     }
 
@@ -31,10 +31,10 @@ class MatchweeksController extends Controller
         foreach ($request['match'] as $key => $index){
             $match = new Match();
             $match->matchweek_id=$matchweek->uuid;
-            $match->local_id=$request['match'][$key]['local'];
-            $match->local=0;
-            $match->visitant_id=$request['match'][$key]['visitant'];
-            $match->visitant=0;
+            $match->local_id=$request['match'][$key]['local_id'];
+            $match->local=$request['match'][$key]['local'];
+            $match->visitant_id=$request['match'][$key]['visitant_id'];
+            $match->visitant=$request['match'][$key]['visitant'];
             $match->save();
         }
         DB::commit();

@@ -70,12 +70,12 @@ class Match extends Model
         return $this->belongsTo(\App\Matchweek::class, 'matchweek_id', 'id');
     }
 
-    public function local()
+    public function locals()
     {
         return $this->belongsTo(\App\Team::class, 'local_id', 'id');
     }
 
-    public function visitant()
+    public function visitants()
     {
         return $this->belongsTo(\App\Team::class, 'visitant_id', 'id');
     }
