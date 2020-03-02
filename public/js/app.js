@@ -2914,15 +2914,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       editMode: false,
+      participantMode: false,
       leagues: [],
       teams: [],
       matchweeks: [],
       totalmatch: 9,
       resultset: [],
+      participant: new Form({
+        phone: '',
+        matchweek: ''
+      }),
       matchweek: new Form({
         "name": '',
         "league_id": '',
@@ -2965,6 +2994,13 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         console.log("Error.....");
       });
+    },
+    addParticipants: function addParticipants(uuid) {
+      this.editMode = false;
+      this.participantMode = true;
+      this.participant.reset();
+      this.participant.matchweek = uuid;
+      $('#addNew').modal('show');
     },
     openModalWindow: function openModalWindow() {
       this.editMode = false;
@@ -3032,6 +3068,67 @@ __webpack_require__.r(__webpack_exports__);
             Swal.fire('Deleted!', 'Matchweek deleted successfully', 'success');
 
             _this4.loadMatchweek();
+          })["catch"](function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+              footer: '<a href>Why do I have this issue?</a>'
+            });
+          });
+        }
+      });
+    },
+    createParticipant: function createParticipant() {
+      var _this5 = this;
+
+      console.log(this.participant.matchweek);
+      this.$Progress.start();
+      this.participant.post('/participants/' + this.participant.matchweek).then(function (response) {
+        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Participant created successfully'
+        });
+
+        _this5.$Progress.finish();
+
+        $('#addNew').modal('hide');
+      })["catch"](function () {
+        console.log("Error......");
+      });
+    },
+    updateParticipant: function updateParticipant() {
+      this.participant.put('/participants/' + this.participant.uuid).then(function () {
+        Toast.fire({
+          icon: 'success',
+          title: 'Participant updated successfully'
+        });
+        Fire.$emit('AfterCreatedMatchweekLoadIt');
+        $('#addNew').modal('hide');
+      })["catch"](function () {
+        console.log("Error.....");
+      });
+    },
+    deleteParticipant: function deleteParticipant(uuid) {
+      var _this6 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          //Send Request to server
+          axios["delete"]('/participants/' + uuid).then(function (response) {
+            Swal.fire('Deleted!', 'Participant deleted successfully', 'success');
+
+            _this6.loadMatchweek();
           })["catch"](function () {
             Swal.fire({
               icon: 'error',
@@ -60776,6 +60873,19 @@ var render = function() {
                           _c(
                             "a",
                             {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.addParticipants(matchweek.uuid)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-trash red" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
                               attrs: { href: "#", "data-id": "user.uuid" },
                               on: {
                                 click: function($event) {
@@ -60839,8 +60949,8 @@ var render = function() {
                             {
                               name: "show",
                               rawName: "v-show",
-                              value: !_vm.editMode,
-                              expression: "!editMode"
+                              value: !_vm.editMode && !_vm.participantMode,
+                              expression: "!editMode && !participantMode"
                             }
                           ],
                           staticClass: "modal-title",
@@ -60856,8 +60966,8 @@ var render = function() {
                             {
                               name: "show",
                               rawName: "v-show",
-                              value: _vm.editMode,
-                              expression: "editMode"
+                              value: _vm.editMode && !_vm.participantMode,
+                              expression: "editMode && !participantMode"
                             }
                           ],
                           staticClass: "modal-title",
@@ -60866,12 +60976,200 @@ var render = function() {
                         [_vm._v("Update Matchweek")]
                       ),
                       _vm._v(" "),
+                      _c(
+                        "h5",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.participantMode,
+                              expression: "participantMode"
+                            }
+                          ],
+                          staticClass: "modal-title",
+                          attrs: { id: "addParticipantLabel" }
+                        },
+                        [_vm._v("Add Participant")]
+                      ),
+                      _vm._v(" "),
                       _vm._m(2)
                     ]),
                     _vm._v(" "),
                     _c(
                       "form",
                       {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.participantMode,
+                            expression: "participantMode"
+                          }
+                        ],
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            _vm.editMode
+                              ? _vm.updateParticipant()
+                              : _vm.createParticipant()
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "modal-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-2" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.participant.matchweek,
+                                      expression: "participant.matchweek"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "participant[uuid]",
+                                    id: "participant[uuid]",
+                                    placeholder: "Partido"
+                                  },
+                                  domProps: {
+                                    value: _vm.participant.matchweek
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.participant,
+                                        "matchweek",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  { attrs: { for: "participant[name]" } },
+                                  [_vm._v("Teléfono")]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.participant.phone,
+                                      expression: "participant.phone"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.participant.errors.has(
+                                      "phone"
+                                    )
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    name: "participant[name]",
+                                    id: "participant[name]",
+                                    placeholder: "Teléfono"
+                                  },
+                                  domProps: { value: _vm.participant.phone },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.participant,
+                                        "phone",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.participant.errors.has("phone")
+                                  ? _c("span", {
+                                      staticClass: "invalid-feedback d-block",
+                                      attrs: { role: "alert" },
+                                      domProps: {
+                                        textContent: _vm._s(
+                                          _vm.participant.errors.get("phone")
+                                        )
+                                      }
+                                    })
+                                  : _vm._e()
+                              ])
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "modal-footer" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              attrs: { type: "button", "data-dismiss": "modal" }
+                            },
+                            [_vm._v("Close")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: _vm.editMode,
+                                  expression: "editMode"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Update")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: !_vm.editMode,
+                                  expression: "!editMode"
+                                }
+                              ],
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Create")]
+                          )
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "form",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.participantMode,
+                            expression: "!participantMode"
+                          }
+                        ],
                         on: {
                           submit: function($event) {
                             $event.preventDefault()
@@ -60898,8 +61196,8 @@ var render = function() {
                                       {
                                         name: "model",
                                         rawName: "v-model",
-                                        value: _vm.matchweek["name"],
-                                        expression: "matchweek['name']"
+                                        value: _vm.matchweek["matchweek"],
+                                        expression: "matchweek['matchweek']"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -60912,9 +61210,11 @@ var render = function() {
                                       type: "text",
                                       name: "name",
                                       id: "name",
-                                      placeholder: "Name"
+                                      placeholder: "matchweek"
                                     },
-                                    domProps: { value: _vm.matchweek["name"] },
+                                    domProps: {
+                                      value: _vm.matchweek["matchweek"]
+                                    },
                                     on: {
                                       input: function($event) {
                                         if ($event.target.composing) {
@@ -60922,7 +61222,7 @@ var render = function() {
                                         }
                                         _vm.$set(
                                           _vm.matchweek,
-                                          "name",
+                                          "matchweek",
                                           $event.target.value
                                         )
                                       }
@@ -78366,8 +78666,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\fjvalencia\Documents\LARAVEL\lvl-vue-adminlte3\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\LARAVEL\login\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\LARAVEL\login\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

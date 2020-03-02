@@ -44,6 +44,9 @@
                                         <td>{{matchweek.league.name}}</td>
                                         <td>{{matchweek.name}}</td>
                                         <td>
+                                            <a href="#" @click="addParticipants(matchweek.uuid)">
+                                                <i class="fa fa-trash red"></i>
+                                            </a>
                                             <a href="#" data-id="user.uuid" @click="editModalWindow(matchweek)">
                                                 <i class="fa fa-edit blue"></i>
                                             </a>
@@ -66,22 +69,43 @@
                             <div class="modal-content">
                                 <div class="modal-header">
 
-                                    <h5 v-show="!editMode" class="modal-title" id="addNewLabel">Add New Matchweek</h5>
-                                    <h5 v-show="editMode" class="modal-title" id="addUpdateLabel">Update Matchweek</h5>
-
+                                    <h5 v-show="!editMode && !participantMode" class="modal-title" id="addNewLabel">Add New Matchweek</h5>
+                                    <h5 v-show="editMode && !participantMode" class="modal-title" id="addUpdateLabel">Update Matchweek</h5>
+                                    <h5 v-show="participantMode" class="modal-title" id="addParticipantLabel">Add Participant</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-
-                                <form @submit.prevent="editMode ? updateMatchweek() : createMatchweek()">
+                                <form v-show="participantMode" @submit.prevent="editMode ? updateParticipant() : createParticipant()">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <input v-model="participant.matchweek" type="hidden" name="participant[uuid]" id="participant[uuid]"
+                                                           placeholder="Partido" class="form-control" >
+                                                    <label for="participant[name]">Teléfono</label>
+                                                    <input v-model="participant.phone" type="text" name="participant[name]" id="participant[name]"
+                                                           placeholder="Teléfono"
+                                                           class="form-control" :class="{ 'is-invalid': participant.errors.has('phone') }">
+                                                    <span class="invalid-feedback d-block" role="alert" v-if="participant.errors.has('phone')" v-text="participant.errors.get('phone')"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        <button v-show="editMode" type="submit" class="btn btn-primary">Update</button>
+                                        <button v-show="!editMode" type="submit" class="btn btn-primary">Create</button>
+                                    </div>
+                                </form>
+                                <form v-show="!participantMode" @submit.prevent="editMode ? updateMatchweek() : createMatchweek()">
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     <label for="name">Jornada</label>
-                                                    <input v-model="matchweek['name']" type="text" name="name" id="name"
-                                                           placeholder="Name"
+                                                    <input v-model="matchweek['matchweek']" type="text" name="name" id="name"
+                                                           placeholder="matchweek"
                                                            class="form-control" :class="{ 'is-invalid': matchweek.errors.has('name') }">
                                                     <span class="invalid-feedback d-block" role="alert" v-if="matchweek.errors.has('name')" v-text="matchweek.errors.get('name')"></span>
                                                 </div>
@@ -178,11 +202,16 @@
         data() {
             return {
                 editMode: false,
+                participantMode: false,
                 leagues: [],
                 teams:[],
                 matchweeks: [],
                 totalmatch:9,
                 resultset:[],
+                participant: new Form({
+                    phone: '',
+                    matchweek:''
+                }),
                 matchweek: new Form({
                     "name": '',
                     "league_id": '',
@@ -224,6 +253,13 @@
                     .catch(() => {
                         console.log("Error.....")
                     })
+            },
+            addParticipants(uuid){
+                this.editMode = false
+                this.participantMode = true
+                this.participant.reset();
+                this.participant.matchweek=uuid;
+                $('#addNew').modal('show');
             },
             openModalWindow() {
                 this.editMode = false
@@ -287,7 +323,69 @@
                         })
                     }
                 })
-            }
+            },
+            createParticipant() {
+                console.log(this.participant.matchweek);
+                this.$Progress.start();
+                this.participant.post('/participants/'+this.participant.matchweek)
+                    .then((response) => {
+                        Fire.$emit('AfterCreatedMatchweekLoadIt'); //custom events
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Participant created successfully'
+                        })
+                        this.$Progress.finish()
+                        $('#addNew').modal('hide');
+                    })
+                    .catch(() => {
+                        console.log("Error......")
+                    })
+            },
+            updateParticipant() {
+                this.participant.put('/participants/' + this.participant.uuid)
+                    .then(() => {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Participant updated successfully'
+                        })
+                        Fire.$emit('AfterCreatedMatchweekLoadIt');
+                        $('#addNew').modal('hide');
+                    })
+                    .catch(() => {
+                        console.log("Error.....")
+                    })
+            },
+            deleteParticipant(uuid) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        //Send Request to server
+                        axios.delete('/participants/' + uuid)
+                            .then((response) => {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Participant deleted successfully',
+                                    'success'
+                                )
+                                this.loadMatchweek();
+                            }).catch(() => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Why do I have this issue?</a>'
+                            })
+                        })
+                    }
+                })
+            },
         }
     }
 </script>

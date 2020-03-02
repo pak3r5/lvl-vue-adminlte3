@@ -35,7 +35,6 @@ class RemoveTablesAndRenameTable extends Migration
             //$table->dropForeign(['match_id']);
         });
         Schema::dropIfExists('matches');
-        Schema::rename('tests', 'matches');
     }
 
     /**

@@ -7,5 +7,8 @@ use App\Match;
 
 class MatchesController extends Controller
 {
-
+    public function show($id)
+    {
+        //
+    }
 }

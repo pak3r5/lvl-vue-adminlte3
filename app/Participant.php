@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Matchweek extends Model
+class Participant extends Model
 {
     use SoftDeletes;
 
-    public $table = 'matchweeks';
+    public $table = 'participants';
 
     protected $dates = ['deleted_at'];
 
     public $fillable = [
-        'league_id',
+        'matchweek_id',
         'name',
-        //'start',
-        //'end'
+        'phone',
+        'code'
     ];
 
     /**
@@ -28,11 +28,11 @@ class Matchweek extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'league_id' => 'integer',
-        'name' => 'string',
         'uuid' => 'uuid',
-        //'start'=>'date',
-        //'end'=>'date',
+        'matchweek_id' => 'integer',
+        'name' => 'string',
+        'phone' => 'string',
+        'code' => 'string',
     ];
 
     /**
@@ -64,23 +64,8 @@ class Matchweek extends Model
         });
     }
 
-    public function league()
+    public function matchweek()
     {
-        return $this->belongsTo(\App\League::class, 'league_id', 'id');
-    }
-
-    public function getDateFormat()
-    {
-        return 'Y-m-d H:i:s';
-    }
-
-    public function matches()
-    {
-        return $this->hasMany(\App\Match::class, 'matchweek_id', 'id');
-    }
-
-    public function participants()
-    {
-        return $this->hasMany(\App\Participant::class, 'matchweek_id', 'id');
+        return $this->belongsTo(\App\Matchweek::class, 'matchweek_id', 'id');
     }
 }

@@ -29,11 +29,20 @@ Route::get('/home/', function () {
 
 });
 
-Route::get('/users', 'UsersController@index');
-Route::post('/users', 'UsersController@create');
+Route::get('/users', 'UsersController@index')->middleware('auth');
+Route::post('/users', 'UsersController@create')->middleware('auth');
 
-Route::resource('countries', 'CountriesController');
-Route::resource('leagues', 'LeaguesController');
-Route::resource('teams', 'TeamsController');
-Route::resource('matchweeks', 'MatchweeksController');
+Route::resource('countries', 'CountriesController')->middleware('auth');
+
+Route::resource('leagues', 'LeaguesController')->middleware('auth');
+
+Route::resource('teams', 'TeamsController')->middleware('auth');
+
+Route::resource('matchweeks', 'MatchweeksController')->middleware('auth');
+
+Route::post('/participants/{uuid}', 'ParticipantsController@store')->middleware('auth');
+Route::put('/participants', 'ParticipantsController@update')->middleware('auth');
+Route::get('/participants/{$uuid}', 'ParticipantsController@find')->middleware('auth');
+Route::delete('/participants', 'ParticipantsController@delete')->middleware('auth');
+
 
